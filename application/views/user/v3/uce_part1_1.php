@@ -11,12 +11,6 @@
     </div>
   </div>
 
-  <style>
-    label {
-      font-size : 18px!important;
-    }
-  </style>
-
   <div class="content-wrapper bg-white">
     <!-- Content Header (Page header) -->
     <section class="content-header bg-white" style="padding: 6px 0.5rem;border-bottom: 1px solid #dee2e6;">
@@ -68,7 +62,7 @@
                     <div class="card card-solid shadow">
                       <div class="card-body pb-0">
                         <div class="form-group">
-                          <p class="bm-0 h3 top-discription">
+                          <p class="bm-0 top-discription">
                             <strong><?php echo $detail['top_discription']; ?></strong>
                           </p>
                         </div>
@@ -97,7 +91,7 @@
     <div class="modal-dialog modal-lg" style='margin-top:160px;'>
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title h1">Instruction</h4>
+          <h4 class="modal-title h1">Introduction</h4>
         </div>
         <div class="modal-body">
           <p class='review h3 font-weight-bold text-secondary'><?php echo $detail['top_discription']; ?></p>

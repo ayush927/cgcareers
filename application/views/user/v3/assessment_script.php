@@ -226,7 +226,7 @@
   }
 
   function createRadios( optionsList, questionCounter , item , questionIndex ) {
-      var radioList = $('<div class="form-group clearfix">');
+      var radioList = $('<div class="form-group clearfix '+( partName == 'uce_part2_3' ? 'col-md-6 text-center' : '' )+'">');
       var radioSelected = false;
       // console.log( 'before', currentPageData , (currentPage-1));
       if( typeof selections[(currentPage-1)] !== 'undefined' ){
@@ -244,10 +244,10 @@
           if( typeof obj !== 'undefined' ){
             // console.log(1)
             if( optionsList[i].options != null ){
-              optionDiv=`<div class="icheck-success ${ partName == 'uce_part2_2' || partName == 'uce_part2_6' ? 'd-inline' : '' }" ${ partName == 'uce_part2_2' || partName == 'uce_part2_6' ? "style='padding: 10px;margin: 10px;'" : '' }>
+              optionDiv=`<div class="icheck-success ${ partName == 'uce_part2_2' || partName == 'uce_part2_6' ? 'd-inline' : ( partName == 'uce_part2_3' ? 'col-md-6 text-center' : '' ) }" ${ partName == 'uce_part2_2' || partName == 'uce_part2_6' ? "style='padding: 10px;margin: 10px;'" : '' }>
               <input type="${ optionType == 'radios' ? 'radio' : 'checkbox' }" data-qid="${parseInt(item.qno)}" onclick='submitOption(this)'  id='${questionCounter+'o'+i}' ${ i == 0 ? 'required' : '' } ${obj.value == parseInt(optionsList[i].value) ? 'checked' : '' } name='que${questionCounter}' data-index='${questionIndex}' value='${optionsList[i].value}'>
                 <label for='${questionCounter+'o'+i}'> 
-                ${ optionData == 'image' ? `<img width="100px" height="100px"  src="${base_url}${optionsList[i].options}" alt="">` : optionsList[i].options }
+                ${ optionData == 'image' ? `<img width="150px" height="150px"  src="${base_url}${optionsList[i].options}" alt="">` : optionsList[i].options }
                 </label>
               </div>`
               if( obj.qno == parseInt(item.qno) ){
@@ -258,10 +258,10 @@
           else{
             // console.log( 2 );
             if( optionsList[i].options != null ){
-              optionDiv=`<div class="icheck-success  ${ partName == 'uce_part2_2' || partName == 'uce_part2_6' ? 'd-inline' : '' }" ${ partName == 'uce_part2_2' || partName == 'uce_part2_6' ? "style='padding: 10px;margin: 10px;'" : '' }>
+              optionDiv=`<div class="icheck-success  ${ partName == 'uce_part2_2' || partName == 'uce_part2_6' ? 'd-inline' : ( partName == 'uce_part2_3' ? 'col-md-6 text-center' : '' ) }" ${ partName == 'uce_part2_2' || partName == 'uce_part2_6' ? "style='padding: 10px;margin: 10px;'" : '' }>
                 <input type="${ optionType == 'radios' ? 'radio' : 'checkbox' }" data-qid="${parseInt(item.qno)}" onclick='submitOption(this)'  id='${questionCounter+'o'+i}' data-index='${questionIndex}' ${ i == 0 ? 'required' : '' } ${ ( optionType == 'radios' ? (optionsList[i].value == item.ans ? 'checked' : '') : ( (item.ans).indexOf(optionsList[i].value)  > -1 ? 'checked' : '' ) ) } name='que${questionCounter}' value='${optionsList[i].value}'>
                 <label for='${questionCounter+'o'+i}'> 
-                  ${ optionData == 'image' ? `<img width="100px" height="100px"  src="${base_url}${optionsList[i].options}" alt="">` : optionsList[i].options } 
+                  ${ optionData == 'image' ? `<img width="150px" height="150px"  src="${base_url}${optionsList[i].options}" alt="">` : optionsList[i].options } 
                 </label>
               </div>`
               if( optionType == 'checkbox' ){
@@ -303,10 +303,10 @@
           if( typeof obj !== 'undefined'  ){
             // console.log(3)
             if( optionsList[i].options != null ){
-              optionDiv=`<div class="icheck-success  ${ partName == 'uce_part2_2' || partName == 'uce_part2_6' ? 'd-inline' : '' }" ${ partName == 'uce_part2_2' || partName == 'uce_part2_6' ? "style='padding: 10px;margin: 10px;'" : '' }>
+              optionDiv=`<div class="icheck-success  ${ partName == 'uce_part2_2' || partName == 'uce_part2_6' ? 'd-inline' : ( partName == 'uce_part2_3' ? 'col-md-6 text-center' : '' ) }" ${ partName == 'uce_part2_2' || partName == 'uce_part2_6' ? "style='padding: 10px;margin: 10px;'" : '' }>
               <input type="${ optionType == 'radios' ? 'radio' : 'checkbox' }" data-qid="${parseInt(item.qno)}" onclick='submitOption(this)' name='que${questionCounter}' data-index='${questionIndex}' id='${questionCounter+'o'+i}' ${ i == 0 ? 'required' : '' } ${ obj.value == optionsList[i].value ? 'checked' : '' } value='${optionsList[i].value}'>
                 <label for='${questionCounter+'o'+i}'> 
-                  ${ optionData == 'image' ? `<img width="100px" height="100px"  src="${base_url}${optionsList[i].options}" alt="">` : optionsList[i].options } 
+                  ${ optionData == 'image' ? `<img width="150px" height="150px"  src="${base_url}${optionsList[i].options}" alt="">` : optionsList[i].options } 
                 </label>
               </div>`
             }
@@ -315,10 +315,10 @@
             // console.log(4 , item)
 
             if( optionsList[i].options != null ){
-              optionDiv=`<div class="icheck-success  ${ partName == 'uce_part2_2' || partName == 'uce_part2_6' ? 'd-inline' : '' }" ${ partName == 'uce_part2_2' || partName == 'uce_part2_6' ? "style='padding: 10px;margin: 10px;'" : '' }>
+              optionDiv=`<div class="icheck-success  ${ partName == 'uce_part2_2' || partName == 'uce_part2_6' ? 'd-inline' : ( partName == 'uce_part2_3' ? 'col-md-6 text-center' : '' ) }" ${ partName == 'uce_part2_2' || partName == 'uce_part2_6' ? "style='padding: 10px;margin: 10px;'" : '' }>
                 <input type="${ optionType == 'radios' ? 'radio' : 'checkbox' }" data-qid="${parseInt(item.qno)}" onclick='submitOption(this)' name='que${questionCounter}' data-index='${questionIndex}' id='${questionCounter+'o'+i}' ${ i == 0 ? 'required' : '' } value='${optionsList[i].value}'>
                   <label for='${questionCounter+'o'+i}'> 
-                    ${ optionData == 'image' ? `<img width="100px" height="100px"  src="${base_url}${optionsList[i].options}" alt="">` : optionsList[i].options } 
+                    ${ optionData == 'image' ? `<img width="150px" height="150px"  src="${base_url}${optionsList[i].options}" alt="">` : optionsList[i].options } 
                   </label>
               </div>`
             }

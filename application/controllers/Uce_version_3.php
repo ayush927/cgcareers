@@ -4,22 +4,13 @@
         parent::__construct();
 
         $this->part2_timer = [
-            'uce_part2'   => 4,
-            'uce_part2_2' => 4, 
-            'uce_part2_3' => 5,
-            'uce_part2_4' => 5,
-            'uce_part2_5' => 3, 
+            'uce_part2'   => 8,
+            'uce_part2_2' => 4, // 8
+            'uce_part2_3' => 5, // 9 Additonal 1 minute for image loading
+            'uce_part2_4' => 4, // 6
+            'uce_part2_5' => 3, // 6 
             'uce_part2_6' => 4// 7 Additonal 2 minute for image loading
         ];
-        // For Test
-        // $this->part2_timer = [
-        //     'uce_part2'   => 1,
-        //     'uce_part2_2' => 1, // 8
-        //     'uce_part2_3' => 1, // 9 Additonal 1 minute for image loading
-        //     'uce_part2_4' => 1, // 6
-        //     'uce_part2_5' => 1, // 6 
-        //     'uce_part2_6' => 1// 7 Additonal 2 minute for image loading
-        // ];
         
         $this->table = [
             'assessment_variation' => 'user_assessment_variation',
@@ -180,7 +171,7 @@
                 'pageName' => 'uce_part1_1',
                 'solution' => 'uce_part2_6',
                 'instruction' => 'uce_part2_6',
-                'nextPart' => 'uce_part2_7',
+                'nextPart' => 'uce_part7',
                 'optionType' => 'radios',
                 'timer' => true,
                 'optionData' => 'image',
@@ -263,7 +254,7 @@
             $que =  getQuery( [ 'where' => $where , 'where_in' => $where_in , 'table' => $partData['queTable'] , 'num_rows' => true , 'single' => true ] );
             // lQ(1);
             $completed = getQuery( [ 'where' => [  'email' => $data['user']['email'] , 'code' => $code , 'solution' => $partData['solution'] ]  , 'table' => $partData['submitTable'] , 'num_rows' => true , 'single' => true ] );
-        //    pre( [$que , $completed ] ,1 );
+           
             if($que==$completed){
                 if( $partName == 'uce_part1_5' || $partName == 'uce_part2_6' || $partName == 'uce_part2_7' ){
                     update( [ 'where' => [ 'user_id' =>   $data['user']['email'] , 'code' => $code , 'part' => ( $partName == 'uce_part1_5' ? 'Part 1' : ( $partName == 'uce_part2_6' ? 'Part 2' : 'Part 3' ) )] , 'data' => ['status' => 'Rp']  , 'table' => $this->table['assessment_info'] ] );
@@ -334,7 +325,7 @@
 
                         if( $queCompleted['qno'] ==  '' ){
                             $question =  getQuery( [ 'where_in' => $where_in, 'where' => $queTableWhere , 'table' => $partData['queTable']
-                            // 'order' => 'rand()' 
+                            // 'order' => 'rand()'
                             ] );
                         }
                         else{
@@ -443,7 +434,7 @@
                 if( $partName == 'uce_part1_5' || $partName == 'uce_part2_6' || $partName == 'uce_part2_7' ){
                     update( [ 'where' => [ 'user_id' =>   $data['user']['email'] , 'code' => $code , 'part' => ( $partName == 'uce_part1_5' ? 'Part 1' : ( $partName == 'uce_part2_6' ? 'Part 2' : 'Part 3' ) )] , 'data' => ['status' => 'Rp']  , 'table' => $this->table['assessment_info'] ] );
                     if( $partName == 'uce_part2_7' ){
-                        update( [ 'where' => [ 'email' => $data['user']['email'] , 'code' => $code ] , 'table' => $this->table['code_list']  , 'data' => [ 'status' => 'Rp' , 'asignment_submission_date'  =>  date("d-m-Y H:i").' (GMT + 5:30)' ] ] );
+                        update( [ 'where' => [ 'user_id' => $data['user']['email'] , 'code' => $code ] , 'table' => $this->table['code_list']  , 'data' => [ 'status' => 'Rp' , 'asignment_submission_date'  =>  date("d-m-Y H:i").' (GMT + 5:30)' ] ] );
                         // lQ(1);
                         $soc_code = $this->db->get('career_sui_temp_latest');
                         foreach($soc_code->result() as $soc)
@@ -503,267 +494,201 @@
         ];
         $code = $this->input->post('code');
         $part = $this->input->post('part');
-        $partData = $this->uce_part[$part];
         if( isset( $_SESSION['workingOn'][$part] ) ){
-            unset( $_SESSION['workingOn'][$part] );
+            unset($_SESSION['workingOn'][$part]);
         }
-
-
-        
-        $rand_part = $this->rand_array_prepare($code);
-        $where_in['q_group'] = $rand_part->$part;
-        // pre( $where_in );
-        // pre( $rand_part );
-        // pre( $_POST , 1 );
-        if( isset( $partData['part'] ) ){
-            $where = [ 'asmt_variant_3' => 1 , 'part' => $partData['part'] ];
-        }
-        else{
-            $where = [ 'asmt_variant_3' => 1 ];
-        }
-        $question =  getQuery( [ 'where' => $where , 'where_in' => $where_in , 'table' => $partData['queTable'] ] );
-
-        if( isset( $partData['part'] ) ){
-            $where = [ 'asmt_variant_3' => 1 , 'part' => $partData['part'] , 'email' => $email , 'code' => $code , 'solution' => $partData['solution'] ];
-            $queTableWhere = [ 'asmt_variant_3' => 1 , 'part' => $partData['part'] ];
-        }
-        else{
-            $where = [ 'asmt_variant_3' => 1 , 'email' => $email , 'code' => $code , 'solution' => $partData['solution'] ];
-            $queTableWhere = [ 'asmt_variant_3' => 1 ];
-        }
-        $completed = getQuery( [ 'where' => [ 'code' => $code , 'solution' => $part ]  , 'table' => 'ppe_part1_test_details'] );
-        // pre( [ count($question) , count($completed) ] , 1 );
-        if(count($question) > count($completed) ){
-            if( $completed > 0 ){
-                $queCompleted = getQuery( [ 'select' => 'GROUP_CONCAT( qno SEPARATOR "," ) as qno' , 'where' => [ 'email' => $data['user']['email'] , 'code' => $code , 'solution' => $partData['solution'] ]  , 'table' =>  $partData['submitTable'] , 'order' => [ 'id' , 'DESC' ] , 'single' => true ] );
-                // pre( $queCompleted );
-                $question =  getQuery( [ 'where_in' => $where_in , 'where' => $queTableWhere , 'table' => $partData['queTable'] , 'where_not_in_numeric' => [ 'qno' => $queCompleted['qno'] ] ] );
-                foreach($question as $q)
+        $onIndex  = array_search($part, $partArray);
+        $where = "email='$email' and code='$code' and solution='".$part."'";
+        $this->db->where($where);
+        $qno = $this->db->get('ppe_part1_test_details')->num_rows();
+        // print_r( $qno );
+        // die;
+        // foreach( $partArray as $key => $partName  ){
+        // if( $key >= $onIndex ){
+            if( $onIndex == 0 ){
+                if($qno==0)
                 {
-                    $formArray = Array(
-                        'email'=>$email,
-                        'qno'=>$q['qno'],
-                        'solution'=>$part,
-                        'code'=>$code,
-                        'ans'=> 0
-                    );
-                    // pre( $formArray );
-                    $this->db->insert('ppe_part1_test_details',$formArray);
+                    $num = '1';
+                }
+                else{
+                    $this->db->where($where);
+                    $qno = $this->db->limit(1)->order_by('id','desc')->get('ppe_part1_test_details');
+                    foreach($qno->result() as $qno)
+                    {
+                        $qno = $qno->qno;
+                        $num = $qno + 1;
+                    }
+                }
+                $qlist['q'] = $this->Base_model->uce_part2_all($num);
+                if( $qlist['q']->num_rows() > 0){
+                    foreach($qlist['q']->result() as $q)
+                    {
+                        $formArray = Array(
+                            'email'=>$email,
+                            'qno'=>$q->qno,
+                            'solution'=>'uce_part2',
+                            'code'=>$code,
+                            'ans'=> 0
+                        );
+                        $this->db->insert('ppe_part1_test_details',$formArray);
+                    }
                 }
             }
-            else{
+            elseif( $onIndex == 1 ){
+                if($qno == 0){
+                    $num = '1';
+                }
+                else{
+                    $this->db->where($where);
+                    $qno = $this->db->limit(1)->order_by('id','desc')->get('ppe_part1_test_details'); 
+                    foreach($qno->result() as $qno)
+                    {
+                        $qno = $qno->qno;
+                        $num = $qno + 1;
+                    }
+                }
+                $qlist['q'] = $this->Base_model->uce_part2_2_all($num);
+                if( $qlist['q']->num_rows() > 0){
+                    foreach($qlist['q']->result() as $q)
+                    {
+                        $formArray = Array(
+                            'email'=>$email,
+                            'qno'=>$q->qno,
+                            'solution'=>'uce_part2_2',
+                            'code'=>$code,
+                            'ans'=> 0
+                        );
+                        $this->db->insert('ppe_part1_test_details',$formArray);
+                    }
+                }
+            }
+            elseif( $onIndex == 2 ){
+                if($qno == 0){
+                    $num = '1';
+                }
+                else
+                {
+                    $this->db->where($where);
+                    $qno = $this->db->limit(1)->order_by('id','desc')->get('ppe_part1_test_details'); 
+                    foreach($qno->result() as $qno)
+                    {
+                        $qno = $qno->qno;
+                        $num = $qno + 1;
+                    }
+                }
+                $qlist['q'] = $this->Base_model->uce_part2_3_all($num);
+                if( $qlist['q']->num_rows() > 0){
+                    foreach($qlist['q']->result() as $q)
+                    {
+                        $formArray = Array(
+                            'email'=>$email,
+                            'qno'=>$q->qno,
+                            'solution'=>'uce_part2_3',
+                            'code'=>$code,
+                            'ans'=> 0
+                        );
+                        $this->db->insert('ppe_part1_test_details',$formArray);
+                    }
+                }
                 
-                // pre( $question , 1 );
-                foreach($que as $q)
+            }
+            elseif( $onIndex == 3 ){
+                if($qno == 0){
+                    $num = '1';
+                }
+                else
                 {
-                    $formArray = Array(
-                        'email'=>$email,
-                        'qno'=>$q['qno'],
-                        'solution'=>'uce_part2',
-                        'code'=>$code,
-                        'ans'=> 0
-                    );
-                    // pre( $formArray );
-                    $this->db->insert('ppe_part1_test_details',$formArray);
+                    $this->db->where($where);
+                    $qno = $this->db->limit(1)->order_by('id','desc')->get('ppe_part1_test_details'); 
+                    foreach($qno->result() as $qno)
+                    {
+                        $qno = $qno->qno;
+                        $num = $qno + 1;
+                    }
+                }
+                $qlist['q'] = $this->Base_model->uce_part2_4_all($num);
+                if( $qlist['q']->num_rows() > 0){
+                    foreach($qlist['q']->result() as $q)
+                    {
+                        $formArray = Array(
+                            'email'=>$email,
+                            'qno'=>$q->qno,
+                            'solution'=>'uce_part2_4',
+                            'code'=>$code,
+                            'ans'=> 0
+                        );
+                        $this->db->insert('ppe_part1_test_details',$formArray);
+                    }
                 }
             }
-        }
+            elseif( $onIndex == 4 ){
+                if($qno == 0){
+                    $num = '1';
+                }
+                else
+                {
+                    $this->db->where($where);
+                    $qno = $this->db->limit(1)->order_by('id','desc')->get('ppe_part1_test_details'); 
+                    foreach($qno->result() as $qno)
+                    {
+                        $qno = $qno->qno;
+                        $num = $qno + 1;
+                    }
+                }
+                $qlist['q'] = $this->Base_model->uce_part2_5_all($num);
+                if( $qlist['q']->num_rows() > 0){
+                    foreach($qlist['q']->result() as $q)
+                    {
+                        $formArray = Array(
+                            'email'=>$email,
+                            'qno'=>$q->qno,
+                            'solution'=>'uce_part2_5',
+                            'code'=>$code,
+                            'ans'=> 0
+                        );
+                        $this->db->insert('ppe_part1_test_details',$formArray);
+                    }
+                }
+            }
+            elseif( $onIndex == 5 ){
+                if($qno == 0){
+                    $num = '1';
+                }
+                else
+                {
+                    $this->db->where($where);
+                    $qno = $this->db->limit(1)->order_by('id','desc')->get('ppe_part1_test_details'); 
+                    foreach($qno->result() as $qno)
+                    {
+                        $qno = $qno->qno;
+                        $num = $qno + 1;
+                    }
+                }
+                $qlist['q'] = $this->Base_model->uce_part2_6_all($num);
+                if( $qlist['q']->num_rows() > 0){
+                    foreach($qlist['q']->result() as $q)
+                    {
+                        $formArray = Array(
+                            'email'=>$email,
+                            'qno'=>$q->qno,
+                            'solution'=>'uce_part2_6',
+                            'code'=>$code,
+                            'ans'=> 0
+                        );
+                        $this->db->insert('ppe_part1_test_details',$formArray);
+                    }
+                }
+            }
+        // }
+        // redirect( base_url().'assessment_variations/'.$partArray[$onIndex+1]."/".base64_encode($code) );
+        // }
         if( $part == 'uce_part2_6' ){
             $where2 = "user_id='$email' and code='$code' and link='uce_part2'";
             $this->db->where( $where2 );
             $this->db->set( 'status' , 'Rp' );
             $this->db->update( $this->table['assessment_info'] );
         }
-        else{
-            $where2 = "user_id='$email' and code='$code' and link='uce_part2'";
-            $this->db->where( $where2 );
-            $this->db->set( 'start_time' , NULl );
-            $this->db->set( 'remain_time' , NUll );
-            $this->db->update( $this->table['assessment_info'] );
-        }
         echo json_encode(['status' => 'success' , 'msg' => 'assessment time up']);
-        // foreach( $partArray as $key => $partName  ){
-        // if( $key >= $onIndex ){
-            // if( $onIndex == 0 ){
-            //     if($qno==0)
-            //     {
-            //         $num = '1';
-            //     }
-            //     else{
-            //         $this->db->where($where);
-            //         $qno = $this->db->limit(1)->order_by('id','desc')->get('ppe_part1_test_details');
-
-            //         foreach($qno->result() as $qno)
-            //         {
-            //             $qno = $qno->qno;
-            //             $num = $qno + 1;
-            //         }
-            //     }
-            //     $qlist['q'] = $this->Base_model->uce_part2_all($num);
-            //     if( $qlist['q']->num_rows() > 0){
-            //         foreach($qlist['q']->result() as $q)
-            //         {
-            //             $formArray = Array(
-            //                 'email'=>$email,
-            //                 'qno'=>$q->qno,
-            //                 'solution'=>'uce_part2',
-            //                 'code'=>$code,
-            //                 'ans'=> 0
-            //             );
-            //             $this->db->insert('ppe_part1_test_details',$formArray);
-            //         }
-            //     }
-            // }
-            // elseif( $onIndex == 1 ){
-            //     if($qno == 0){
-            //         $num = '1';
-            //     }
-            //     else{
-            //         $this->db->where($where);
-            //         $qno = $this->db->limit(1)->order_by('id','desc')->get('ppe_part1_test_details'); 
-            //         foreach($qno->result() as $qno)
-            //         {
-            //             $qno = $qno->qno;
-            //             $num = $qno + 1;
-            //         }
-            //     }
-            //     $qlist['q'] = $this->Base_model->uce_part2_2_all($num);
-            //     if( $qlist['q']->num_rows() > 0){
-            //         foreach($qlist['q']->result() as $q)
-            //         {
-            //             $formArray = Array(
-            //                 'email'=>$email,
-            //                 'qno'=>$q->qno,
-            //                 'solution'=>'uce_part2_2',
-            //                 'code'=>$code,
-            //                 'ans'=> 0
-            //             );
-            //             $this->db->insert('ppe_part1_test_details',$formArray);
-            //         }
-            //     }
-            // }
-            // elseif( $onIndex == 2 ){
-            //     if($qno == 0){
-            //         $num = '1';
-            //     }
-            //     else
-            //     {
-            //         $this->db->where($where);
-            //         $qno = $this->db->limit(1)->order_by('id','desc')->get('ppe_part1_test_details'); 
-            //         foreach($qno->result() as $qno)
-            //         {
-            //             $qno = $qno->qno;
-            //             $num = $qno + 1;
-            //         }
-            //     }
-            //     $qlist['q'] = $this->Base_model->uce_part2_3_all($num);
-            //     if( $qlist['q']->num_rows() > 0){
-            //         foreach($qlist['q']->result() as $q)
-            //         {
-            //             $formArray = Array(
-            //                 'email'=>$email,
-            //                 'qno'=>$q->qno,
-            //                 'solution'=>'uce_part2_3',
-            //                 'code'=>$code,
-            //                 'ans'=> 0
-            //             );
-            //             $this->db->insert('ppe_part1_test_details',$formArray);
-            //         }
-            //     }
-                
-            // }
-            // elseif( $onIndex == 3 ){
-            //     if($qno == 0){
-            //         $num = '1';
-            //     }
-            //     else
-            //     {
-            //         $this->db->where($where);
-            //         $qno = $this->db->limit(1)->order_by('id','desc')->get('ppe_part1_test_details'); 
-            //         foreach($qno->result() as $qno)
-            //         {
-            //             $qno = $qno->qno;
-            //             $num = $qno + 1;
-            //         }
-            //     }
-            //     $qlist['q'] = $this->Base_model->uce_part2_4_all($num);
-            //     if( $qlist['q']->num_rows() > 0){
-            //         foreach($qlist['q']->result() as $q)
-            //         {
-            //             $formArray = Array(
-            //                 'email'=>$email,
-            //                 'qno'=>$q->qno,
-            //                 'solution'=>'uce_part2_4',
-            //                 'code'=>$code,
-            //                 'ans'=> 0
-            //             );
-            //             $this->db->insert('ppe_part1_test_details',$formArray);
-            //         }
-            //     }
-            // }
-            // elseif( $onIndex == 4 ){
-            //     if($qno == 0){
-            //         $num = '1';
-            //     }
-            //     else
-            //     {
-            //         $this->db->where($where);
-            //         $qno = $this->db->limit(1)->order_by('id','desc')->get('ppe_part1_test_details'); 
-            //         foreach($qno->result() as $qno)
-            //         {
-            //             $qno = $qno->qno;
-            //             $num = $qno + 1;
-            //         }
-            //     }
-            //     $qlist['q'] = $this->Base_model->uce_part2_5_all($num);
-            //     if( $qlist['q']->num_rows() > 0){
-            //         foreach($qlist['q']->result() as $q)
-            //         {
-            //             $formArray = Array(
-            //                 'email'=>$email,
-            //                 'qno'=>$q->qno,
-            //                 'solution'=>'uce_part2_5',
-            //                 'code'=>$code,
-            //                 'ans'=> 0
-            //             );
-            //             $this->db->insert('ppe_part1_test_details',$formArray);
-            //         }
-            //     }
-            // }
-            // elseif( $onIndex == 5 ){
-            //     if($qno == 0){
-            //         $num = '1';
-            //     }
-            //     else
-            //     {
-            //         $this->db->where($where);
-            //         $qno = $this->db->limit(1)->order_by('id','desc')->get('ppe_part1_test_details'); 
-            //         foreach($qno->result() as $qno)
-            //         {
-            //             $qno = $qno->qno;
-            //             $num = $qno + 1;
-            //         }
-            //     }
-            //     $qlist['q'] = $this->Base_model->uce_part2_6_all($num);
-            //     if( $qlist['q']->num_rows() > 0){
-            //         foreach($qlist['q']->result() as $q)
-            //         {
-            //             $formArray = Array(
-            //                 'email'=>$email,
-            //                 'qno'=>$q->qno,
-            //                 'solution'=>'uce_part2_6',
-            //                 'code'=>$code,
-            //                 'ans'=> 0
-            //             );
-            //             $this->db->insert('ppe_part1_test_details',$formArray);
-            //         }
-            //     }
-            // }
-        // }
-        // redirect( base_url().'assessment_variations/'.$partArray[$onIndex+1]."/".base64_encode($code) );
-        // }
-       
-        // echo json_encode(['status' => 'success' , 'msg' => 'assessment time up']);
     }
 
     function variation_time_update( $code  , $partName)

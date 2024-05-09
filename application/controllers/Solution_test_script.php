@@ -276,5 +276,24 @@
       $end = microtime(TRUE);
       pre( [ 'status' => 'success' , 'code' => 200 , 'submitted all question with answers' , 'code' => $code , 'start' => $start , 'end' => $end, 'total' => 'Execution took '.( $end - $start ).' seconds.' , 'reportUrl' => 'https://users.respicite.com/dev/OtherAjax/uce_report_three.php?code='.base64_encode($code) ] );
     }
+
+
+    function solution_careers( $provided ){
+      $getCode = getQuery( [ 'where' => [ 'code' => $provided ] , 'table' => 'user_code_list' , 'single' => true ] );
+      if( !empty( $getCode ) ){
+          redirect( base_url().'OtherAjax/uce_report_two_dev.php?code='.base64_encode($provided) );
+      }
+      else{
+        $getCodes = getQuery( [ 'where' => [ 'email' => $provided , 'solution' => 'UCE' ] , 'table' => 'user_code_list' , 'order' => [ 'id' => 'DESC' ] ] );
+        if( !empty($getCodes) ){
+          foreach ($getCodes as $key => $value){
+            echo "<a target='_blank' href='".base_url().'OtherAjax/uce_report_two_dev.php?code='.base64_encode($value['code'])."'>".$value['code']."</a><br><br>";
+          }
+        }
+        else{
+          echo 'No code found';
+        }
+      }
+    }
   }
 ?>

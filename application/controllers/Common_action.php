@@ -232,7 +232,7 @@
         setFlashData( [ 'status' => 'danger' , 'msg' => 'Invalid Request' ] );
       }
       if( $user['iam'] == 'sp' ){
-        redirect( 'SpController/unused-code' );
+        redirect( 'SpController/unused-code' ); 
       }
       else{
         redirect( 'UserController/unused-code' ); 

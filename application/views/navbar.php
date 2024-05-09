@@ -2,7 +2,7 @@
 
 
 
-$webpage_title='Respicite';
+$webpage_title='CG Careers';
 
 
 
@@ -57,7 +57,7 @@ if($is_active['mot_navbar']){$menu['mot_navbar'] = $mot_navbar;}
 	<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"> -->
 
   <!-- Google Font: Source Sans Pro -->
-  <link href="<?= base_url() ?>assets/logo_36.png" rel="shortcut icon" type="image/png">
+
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
 
   <!-- Font Awesome -->

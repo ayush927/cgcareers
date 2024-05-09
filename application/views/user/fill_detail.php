@@ -442,11 +442,13 @@
 
         <div class="form-group">
 
+        
             <select class="form-control" name="cls" id="cls">
 
                     <option value="">Select <?= $person_detail_type; ?></option>
 
                     <?php
+                    
 
                       for($ct=0;$ct<$cnt;$ct++)
 
@@ -454,7 +456,7 @@
 
                        ?>
 
-                       <option value="<?= $s_class[$ct]; ?>,<?= $c_detail[$ct]; ?>"><?= $c_detail[$ct]; ?></option>
+                       <option value="<?= $s_class[$ct]; ?>" <?=  isset( $variantdata ) ? ( $variantdata['class'] == $s_class[$ct] ? 'selected="selected"' : '' ) : ''  ?> ><?=  $c_detail[$ct]; ?></option>
 
                        <?php 
 

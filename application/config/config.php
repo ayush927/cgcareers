@@ -23,9 +23,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'https://users.respicite.com/';
+$config['base_url'] = 'https://staging.respicite.com/dev/';
 
-// echo $config['base_url'];
+
+
+
+$config['associate_profile'] = [ 'C3E'   ];
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -228,7 +233,7 @@ $config['allow_get_array'] = TRUE;
 | your log files will fill up very fast.
 |
 */
-$config['log_threshold'] = 1;
+$config['log_threshold'] = 0;
 
 /*
 |--------------------------------------------------------------------------

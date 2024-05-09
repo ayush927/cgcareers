@@ -754,12 +754,14 @@
             }
         }
 
-        function variation_time_update( $code  , $partName)
+        function variation_time_update( $code  , $partName )
         {
             $_SESSION['timer'][$partName] = true;
             $dateTime = date('Y-m-d H:i:s');
+            $endTime = date( 'Y-m-d H:i:s' , strtotime( "+".$this->part2_timer[$partName]." minutes", strtotime($dateTime) ));
             $this->db->where( 'code="'.$code.'" and link="uce_part2"' );
             $this->db->set( 'start_time' , $dateTime );
+            $this->db->set( 'end_time' , $endTime );
             $this->db->set( 'remain_time' , $this->part2_timer[$partName] );
             $this->db->update( 'user_assessment_info' );
             // lQ(1);

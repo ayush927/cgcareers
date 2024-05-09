@@ -65,7 +65,7 @@
                               </td>
                               <td><strong><?= ucwords($variation['uce_report_variation']) ?></strong></td>
                               <td>
-                                  <!-- <a class="btn btn-sm btn-primary" href="<?php // echo base_url("userController/update-report-variation/one")?>">One</a> -->
+                                  <a class="btn btn-sm btn-primary" href="<?php echo base_url("userController/update-report-variation/one")?>">One</a>
                                   <a class="btn btn-sm btn-info" href="<?php echo base_url("userController/update-report-variation/two")?>">Two</a>
                                   <a class="btn btn-sm btn-secondary" href="<?php echo base_url("userController/update-report-variation/three")?>">Three</a>
                               </td>
