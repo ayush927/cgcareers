@@ -1086,7 +1086,6 @@ class UserController extends CI_Controller
         // die;
 
         $this->load->view("navbar", $data);
-
         $iam = $user["iam"];
         if( $iam == "sp" ){
             $this->load->view("sp/sidebar", $data);
@@ -2194,11 +2193,13 @@ class UserController extends CI_Controller
         $data["user"] = $user;
         insert(
             [
-                'solution' => $solution,
-                'reseller_id' => $user['id'],
-                'link' => base64_encode( $user['id'] ),
-            ],
-            'assessment_link'
+               [
+                   'solution' => $solution,
+                   'reseller_id' => $user['id'],
+                   'link' => base64_encode( $user['id'] ),
+               ]
+               ,'assessment_link',
+            ]
         );
         redirect( 'UserController/view_reseller_code' );
     }
@@ -2832,7 +2833,7 @@ class UserController extends CI_Controller
         if ($email == null) {
             $email = $user["email"];
         }
-
+ 
         //echo $email.$solution;die();
 
         $where = "email='$email' and solution='$solution' and status='UnUsed'";
@@ -3115,7 +3116,7 @@ class UserController extends CI_Controller
         // $this->load->view("footer");
     }
 
-    public function create_request($code, $solution, $user_id , $folder = null)
+    public function create_request($code, $solution, $user_id , $folder  = null)
     {
         $data = $this->initializer();
 
@@ -3957,7 +3958,8 @@ class UserController extends CI_Controller
                             $OTP_code = rand(1000,1000000);
                             if($this->User_model->assessment_otp_update_by_email($email_id,$OTP_code) > 0){
                             $subject = "Welcome from Respicite LLP - Verify your Email id";
-                            $body_msg = "Dear ".$email_id." <br/> Please complete your Registation with this:- ".$OTP_code."
+                            $body_msg  = "Dear ".$email_id." <br/> Please complete your Registation with this : - ".$OTP_code." <br>
+                            and login with this password : - Test1234
                             <br/> Team Respicite <br/> <a href='https://respicite.com'>https://respicite.com</a> ";
                             $this->User_model->otp_send_on_email($email_id,$subject,$body_msg);
                             }
@@ -3970,6 +3972,7 @@ class UserController extends CI_Controller
                     else{
                         $checkUserExist  = getQuery( [ 'where' => [ 'email_id' => $email_id ] , 'table' => 'assessment_user_tmp' , 'single' => true ] );
                         $OTP_code = rand(1000,1000000);
+                        // if($this->User_model->assessment_otp_update_by_email($email,$OTP_code) > 0){
                         $subject = "Welcome from Respicite LLP - Verify your Email id";
                         $body_msg  = "Dear ".$email_id." <br/> Please complete your Registation with this : - ".$OTP_code." <br>
                         and login with this password : - Test1234

@@ -251,7 +251,7 @@ $rr = explode(",",$allowed_services);
             </ul>
           </li>
           <?php
-            if( $getUserFullDetail['domain_type'] == 'whitelabel' ||  $getUserFullDetail['domain_type'] == 'co_branded'  ){
+            if( $getUserFullDetail['domain_type'] == 'whitelabel' ||  $getUserFullDetail['domain_type'] == 'co_branded' ){
           ?>
             <li class="nav-item">
               <a href="#" class="nav-link">

@@ -1,5 +1,4 @@
 <?php
-    
     require_once APPPATH.'third_party/razorpay-php/Razorpay.php';
     use Razorpay\Api\Api;
     class BaseController extends CI_Controller
@@ -4733,7 +4732,7 @@
                         $this->session->set_flashdata('msg',validation_errors());
                         redirect(base_url().'BaseController/jrap_part3/'.base64_encode($code));   
                     }
-                }    
+                }
             }
         }
         public function fill_personal_detail($code)
@@ -4747,12 +4746,12 @@
                 $this->session->set_flashdata('msg','You are not authorized to access this section');
                 redirect(base_url().'/UserController/login');
             }
-            
             $user = $this->session->userdata('user');
             $data = $this->initializer();
             $data['user'] = $user;
             $email = $user['email'];
             $codeData = getQuery( [ 'where' => [ 'code' => $code ] , 'table' => 'user_code_list' , 'single' => true  ] );
+            // pre( $codeData );
             if( !empty( $codeData ) ){
                 $variantId =  getQuery( [ 'single' => true,  'table' => 'user_solution_variation_data' , 'where' => [ 'requestId' => $codeData['id'] ] ] );
                 // pre( $variantId );
@@ -4760,9 +4759,7 @@
                     $data['variantdata'] = getQuery( [ 'single' => true, 'table' => 'solution_variant_new' , 'where' => [ 'id' => $variantId['variationId'] ] ] );
                 }
             }
-            // if( !empty( $codeData ) ){
-            //     $data['getClass'] =  getQuery( [ 'table' => ' solution_variant' , 'where' => [ 'solution_name' => $codeData['solution'] ] ] );
-            // }
+            // pre( $data , 1 );
             $this->load->view('navbar3',$data);
             $this->load->view('user/sidebar'); 
             $this->load->view('user/fill_detail',$data); 

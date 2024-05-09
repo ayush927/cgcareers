@@ -1,6 +1,6 @@
 <?php
 ob_start();
-$sign_url = ($_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http') . "://{$_SERVER['SERVER_NAME']}/";
+$sign_url = ($_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http') . "://{$_SERVER['SERVER_NAME']}/dev/";
 $code = base64_decode($_GET['code']);
 include('dbconn.php');
 
@@ -3225,7 +3225,6 @@ suitable_career_identification($pdf , $code, $con , $p1_2_per , $apt_value);
             }
             $stream = $v['11th_12th'];
             $edu = $v['Education'];
-            $scr = round($v['scr_car']*100/0.64 , 0);
             if( $scr >= 100 ){
                 $scr = '99+';
             }

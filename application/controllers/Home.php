@@ -378,9 +378,7 @@ class Home extends Ci_controller{
                 $json_msg["message"] = "Your Request has been forwarded to the counsellor.The team shall connect with you.";
             }
             $this->output->set_content_type('application/json')->set_output(json_encode($json_msg));
-            
         }
-        
         function check_status(){
             if( !isset($_GET['email_id']) ){
                 $data['code'] = null;

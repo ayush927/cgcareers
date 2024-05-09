@@ -570,7 +570,7 @@
 
                         <input type="file" class="custom-file-input" name="img" id="img">
 
-                        <label class="custom-file-label" for="img">Choose file 200*200px. ( Jpg ,Jpeg , png ) </label>
+                        <label class="custom-file-label" for="img">Choose file 200*200px. </label>
 
                       </div>
 
