@@ -1,6 +1,6 @@
 <?php
-$sign_url = ($_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http') . "://{$_SERVER['SERVER_NAME']}/dev/";
 ob_start();
+$sign_url = ($_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http') . "://{$_SERVER['SERVER_NAME']}/";
 $code = base64_decode($_GET['code']);
 include('dbconn.php');
 
@@ -3226,7 +3226,12 @@ suitable_career_identification($pdf , $code, $con , $p1_2_per , $apt_value);
             $stream = $v['11th_12th'];
             $edu = $v['Education'];
             $scr = round($v['scr_car']*100/0.64 , 0);
-            $arr_professions_final[] = [ $prof, $cluster,$stream,$edu , $scr];
+            if( $scr >= 100 ){
+                $scr = '99+';
+            }
+            $car_reco_4_18_24 = $arr_to_print[$k]['car_reco'].' ('.$scr.')';
+            // $arr_professions_final[] = [ $prof, $cluster,$stream,$edu , $scr];
+            $arr_professions_final[] = [ $prof, $cluster,$stream,$edu , $car_reco_4_18_24];
             extract( $arr_to_print[$k] );
             $profession_name = mysqli_real_escape_string($con, $profession_name);
             $edu = mysqli_real_escape_string($con, $edu);
@@ -3267,7 +3272,7 @@ suitable_career_identification($pdf , $code, $con , $p1_2_per , $apt_value);
                 $pdf->Cell(30,6,'Cluster',1,0,'L',true); 
                 $pdf->Cell(25,6,'Stream',1,0,'L',true);
                 $pdf->Cell(65,6,'Higher Education',1,0,'L',true);
-                $pdf->Cell(34,6,'Score',1,1,'L',true);
+                $pdf->Cell(34,6,'Career Compatibility',1,1,'L',true);
                 $xn = $x = $pdf->GetX();
                 $yn = $y = $pdf->GetY();
                 $pdf->SetFont('Arial','B',9);

@@ -196,7 +196,7 @@ let message = '<?php echo $detail->top_discription; ?>'
                             if( response.status == 'success' ){
                                 assessmentStart = new Date(response.data.dateTime);
                                 EndTime = new Date(response.data.newDateTime);
-                                start(assessmentStart);
+                                start();
                             }
                         }
                     });
@@ -217,13 +217,10 @@ let message = '<?php echo $detail->top_discription; ?>'
     }
 ?>
 let part = '<?= $partName ?>';
-function start(assessmentStart = null){
+function start(){
     let counter = setInterval(() => {
     // Get Date Now
     let dateNow = new Date().getTime();
-    if( assessmentStart != null ){
-        let dateNow = new Date(assessmentStart);
-    }
     // Find The Difference Between The Time Now And The Countdown Date
     let dateDiff = EndTime - dateNow;
     let days = Math.floor(dateDiff / (1000 * 60 * 60 * 24));

@@ -1,39 +1,8 @@
 <body class="hold-transition sidebar-mini">
 
 <div class="wrapper">
-<style>
-  .copy-text-btn:active {
-    background: #809ce2;
-  }
-  .copy-text-btn button:before {
-    content: "Copied";
-    position: absolute;
-    top: -45px;
-    right: 0px;
-    background: #5c81dc;
-    padding: 8px 10px;
-    border-radius: 20px;
-    font-size: 15px;
-    display: none;
-  }
-  .copy-text-btn button:after {
-    content: "";
-    position: absolute;
-    top: -20px;
-    right: 25px;
-    width: 10px;
-    height: 10px;
-    background: #5c81dc;
-    transform: rotate(45deg);
-    display: none;
-  }
-  .copy-text-btn.active button:before,
-  .copy-text-btn.active button:after {
-    display: block;
-  }
-</style>
 
-  <div class="content-wrapper">
+<div class="content-wrapper">
 
     <!-- Content Header (Page header) -->
 
@@ -68,12 +37,32 @@
     </section>
 
     <section class="content">
- 
+
       <div class="container-fluid">
 
-        <?php view('message'); ?>
+      <?php 
 
-        <div class="row">
+        $msg = $this->session->flashdata('msg');
+
+        if($msg !="")
+
+        {
+
+  ?>     
+
+    <div class="alert alert-success">
+
+            <?php echo $msg; ?>
+
+    </div>
+
+    <?php 
+
+}
+
+?>
+
+  <div class="row">
 
           <div class="col-12">
 
@@ -83,22 +72,60 @@
 
                 <h3 class="card-title">Code List</h3>
 
+
+
+                <!-- <div class="card-tools">
+
+                  <div class="input-group input-group-sm" style="width: 150px;">
+
+                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+
+
+
+                    <div class="input-group-append">
+
+                      <button type="submit" class="btn btn-default">
+
+                        <i class="fas fa-search"></i>
+
+                      </button>
+
+                    </div>
+
+                  </div>
+
+                </div>-->
+
               </div> 
 
               <!-- /.card-header -->
 
+              
+
               <div class="card-body">
 
                 <table id="example2" class="table table-bordered table-striped">
+
                   <thead>
+
                     <tr>
+
+                    
+
                       <th>Solution</th>
+
                       <th>Total Codes Purchased</th>
+
                       <th>Unused Codes</th>
+                      
                       <th>Solution Link</th>
+
                     </tr>
+
                   </thead>
+
                   <tbody>
+
                   <?php 
                   // pre(  $user , 1 );
                   $email = $user['email'];
@@ -129,39 +156,58 @@
                       }
                       if($i>0)
                       {
-                    ?>
-                        <tr>
-                          <td> <?= $solution;?></td>
-                          <td> <?= $i ?> </td>
-                          <td> <?= $n ?></td>                       
-                          <td> <?php
-                          if( !empty($solutionLink) ) {
-                            $assessment_link = base_url().'take-assessment/'.$solutionLink['link'];
-                          ?>
-                            <span id="<?= $solution ?>"> <?= $assessment_link ?> </span> <i onclick='copySelection("<?= $solution ?>")' class='text-copy-btn btn btn-info fa fa-copy' title='copy'></i> <i onclick='shareSelection("<?= $assessment_link ?>")' class="btn btn-success fa fa-share-square" title='Share'></i>
-                          <?php
-                            }
-                            else{
-                          ?> 
-                            <a class="btn btn-info" href="<?=base_url().'common-action/create-assessment-link/'.$solution ?> "> Create Link </a>
-                          <?php
-                            }
-                          ?>
-                        </td>
-                      </tr>
-                    <?php
-                        }
+                        echo "<tr><td>";
+                        echo $solution;
+                        echo "</td>";
+                        echo "<td>";
+                        echo $i;
+                        echo "</td>";
+                        echo "<td>";
+                        echo $n;
+                        echo "</td>";                       
+                        echo "<td>";
+                        echo ( !empty($solutionLink) ?  base_url().'UserController/take-assessment/'.$solutionLink['link'] : '<a class="btn btn-info" href="'.base_url().'UserController/create-assessment-link/'.$solution.'"> Create Link </a>' );
+                        echo "</td></tr>";
                       }
-                    ?>  
-                </tbody>
-              </table>
+                  }
+                ?>   
+
+                  
+
+                    
+
+                    
+
+                    
+
+                  </tbody>
+
+                </table>
+
+                
+
               </div>
+
+             
+
+              
+
+             
+
+</form>
+
               <!-- /.card-body -->
+
             </div>
+
             <!-- /.card -->
+
           </div>
+
         </div>
-        <!-- jQuery -->
+
+         <!-- jQuery -->
+
 <script src="<?php echo base_url('/assets/plugins/jquery/jquery.min.js'); ?>"></script>
 
 <!-- Bootstrap 4 -->
@@ -175,9 +221,8 @@
 <script src="<?php echo base_url().'assets/plugins/datatables-responsive/js/dataTables.responsive.min.js';?>"></script>
 
 <script src="<?php echo base_url().'assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js';?>"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<script>
+        <script>
 
   $(function () {
 
@@ -208,71 +253,5 @@
     });
 
   });
-
-  function copySelection( solution ){
-      var temp = $("<input>");
-      $("body").append(temp);
-      temp.val($('#'+solution).text()).select();
-      document.execCommand("copy");
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "Link Has been copied",
-        showConfirmButton: false,
-        timer: 1500,
-        width : 200
-      });
-      temp.remove();
-  }
-  
-
-  function shareSelection( link ){
-    Swal.fire({
-      title: "Submit link Through Email",
-      input: "email",
-      inputAttributes: {
-        autocapitalize: "off"
-      },
-      showCancelButton: true,
-      confirmButtonText: "Share Link",
-      showLoaderOnConfirm: true,
-      preConfirm: async (login) => {
-        try {
-          const sendMailUrl = `<?= base_url('common-action/send-email/') ?>${btoa(link)}/${btoa(login)}`;
-          const response = await fetch(sendMailUrl);
-          // if (!response.ok) {
-            // return Swal.showValidationMessage(`
-              // ${JSON.stringify(await response.json())}
-            // `);
-          // }
-          return response.json();
-        } catch (error) {
-          Swal.showValidationMessage(`
-            Request failed: ${error}
-          `);
-        }
-      },
-      allowOutsideClick: () => !Swal.isLoading()
-    }).then((result) => {
-      console.log( result );
-      if (result.isConfirmed) {
-        if( result.value.msg == 'OTP SEND' ){ 
-          msg  = 'OTP has been send please check and take assessment'
-          
-        }
-        else if( result.value.msg == 'NOT USER' ){
-          msg  = 'User already exist in system , please check email address'
-        }
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: msg,
-          showConfirmButton: false,
-          timer: 1500,
-          width : 400
-        });
-      }
-    });
-  }
 
 </script>

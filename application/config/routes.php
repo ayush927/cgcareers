@@ -51,7 +51,7 @@
   $route['default_controller'] = 'UserController';
   $route['404_override'] = '';
   $route['translate_uri_dashes'] = true;
-
+  
   $route['best-counsellors-india'] = 'home/counsellors';
   $route['best-counsellors-india/(:any)'] = 'home/counsellors/$1';
   $route['best-counsellors-india/(:any)/(:any)'] = 'home/counsellors/$1/$2';
@@ -110,10 +110,10 @@
   $route['AdminController/edit-variation-image/(:any)'] = 'AdminController/variation-report-image/$1';
   $route['UserController/edit-variation-image/(:any)'] = 'UserController/variation-report-image/$1';
   $route['SpController/edit-variation-image/(:any)'] = 'SpController/variation-report-image/$1';
-  
+
 
   // 
   $route['check-status'] = 'home/check-status/';
   $route['check-status/(:any)'] = 'home/check-status/$1';
-  
+ 
   $route['take-assessment/(:any)'] = 'purchase-assessment/take-assessment/$1';

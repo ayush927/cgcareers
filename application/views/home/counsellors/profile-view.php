@@ -469,6 +469,16 @@
         #product-rating-tab{
             font-size:18px;
         }
+
+        .aboutUs{
+            min-height : 100px;
+            height: auto;
+        }
+
+        .services{
+            min-height : 100px;
+            height: auto;
+        }
     </style>
 
   </head>
@@ -749,11 +759,11 @@
                                         $img_arr = explode('/' , $p_photo );
                                         // pre( $img_arr );
                                         if( $img_arr[count($img_arr) - 1] == 'default.png' ){
-                                            $image = base_url().'uploads/counsellor-thumb/avatar-100-100.jpg';
+                                            $image = base_url().'uploads/avatar-100-100.jpg';
                                         }
                                         else{
-                                            if( file_exists( './uploads/counsellor-thumb/'.$img_arr[count($img_arr) - 1] ) ){
-                                                $image = base_url().'uploads/counsellor-thumb/'.$img_arr[count($img_arr) - 1];
+                                            if( file_exists( './uploads/'.$img_arr[count($img_arr) - 1] ) ){
+                                                $image = base_url().'uploads/'.$img_arr[count($img_arr) - 1];
                                             }
                                             else{
                                                 // echo 2;
@@ -770,11 +780,11 @@
                                         $img_arr = explode('/' , $p_photo );
                                         // pre( $img_arr );
                                         if( $img_arr[count($img_arr) - 1] == 'default.png' ){
-                                            $image = base_url().'uploads/counsellor-thumb/avatar-100-100.jpg';
+                                            $image = base_url().'uploads/avatar-100-100.jpg';
                                         }
                                         else{
-                                            if( file_exists( './uploads/counsellor-thumb/'.$img_arr[count($img_arr) - 1] ) ){
-                                                $image = base_url().'uploads/counsellor-thumb/'.$img_arr[count($img_arr) - 1];
+                                            if( file_exists( './uploads/'.$img_arr[count($img_arr) - 1] ) ){
+                                                $image = base_url().'uploads/'.$img_arr[count($img_arr) - 1];
                                             }
                                             else{
                                                 // echo 2;
@@ -790,18 +800,18 @@
                                     $img_arr = explode('/' , $p_photo );
                                     // pre( $img_arr );
                                     if( $img_arr[count($img_arr) - 1] == 'default.png' ){
-                                        $image = base_url().'uploads/counsellor-thumb/avatar-100-100.jpg';
+                                        $image = base_url().'uploads/avatar-100-100.jpg';
                                     }
                                     else{
-                                        if( file_exists( './uploads/counsellor-thumb/'.$img_arr[count($img_arr) - 1] ) ){
-                                            $image = base_url().'uploads/counsellor-thumb/'.$img_arr[count($img_arr) - 1];
+                                        if( file_exists( './uploads/'.$img_arr[count($img_arr) - 1] ) ){
+                                            $image = base_url().'uploads/'.$img_arr[count($img_arr) - 1];
                                         }
                                         else{
                                             // echo 2;
                                             $image = LIVE_URL.'uploads/'.$img_arr[count($img_arr) - 1];
                                         // }
                                         // else{
-                                        //     $image = base_url().'uploads/counsellor-thumb/avatar-100-100.jpg';
+                                        //     $image = base_url().'uploads/avatar-100-100.jpg';
                                         }
                                     }
                                     // $image = 'uploads/avatar.jpg';
@@ -826,10 +836,10 @@
                                 if( str_word_count( $about_us )  > 100){
                                     // echo 1;
                             ?>
-                            <div class='row h-100'>
-                                <div class='col-md-12 h-100'>
+                            <div class='row aboutus'>
+                                <div class='col-md-12'>
                                     <h3>About</h3>
-                                    <div class="form-group text-justify h-100"> 
+                                    <div class="form-group text-justify"> 
                                         <?php 
                                             $word_arr = explode( ' ', $about_us );
                                             $str = '';
@@ -853,14 +863,14 @@
                                 }
                                 elseif( str_word_count( $about_us ) + str_word_count( $key_services ) < 100 ){
                             ?>
-                                <div class='row h-100'>
-                                    <div class='col-md-12 h-50'>
+                                <div class='row aboutus'>
+                                    <div class='col-md-12'>
                                         <h3>About</h3>
                                         <div class="form-group"> <?php echo $about_us; ?>
                                         </div>
                                     </div>
                                     <hr>
-                                    <div class='col-md-12 h-50'>
+                                    <div class='col-md-12 services'>
                                         <h4>Key Services</h4>
                                         <div class="form-group"> <?php echo $key_services; ?> </div>
                                         <div class="mt-2 border-1">

@@ -13,10 +13,10 @@
   $sql = "select * from certificate_template where c_group='$grp'";
   $res = mysqli_query($con,$sql);
   $row = mysqli_fetch_array($res);
+  extract( $row );
   $pt = '../'.$row['template'];
   $logo = '../'.$row['logo'];
 
-  extract( $row );
   $sign1 = '../'.$row['sign_one'];
   $sign2 = '../'.$row['sign_two'];
   $sign3 = '../'.$row['sign_three'];

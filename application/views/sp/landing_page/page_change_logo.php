@@ -60,7 +60,7 @@
                     ?>       
                     <form action="" enctype="multipart/form-data" method="post">
                         <div class="form-group">
-                            <label for="exampleInputFile">Reseller Page Logo</label>
+                        <label for="exampleInputFile">Reseller Page Logo ( type :- Jpg , png ) ( Max dimension 390*80 px )</label>
                             <div class="input-group">
                                 <div class="custom-file">
                                 <input type="file" class="form-control"  name="img" id="img">
@@ -104,5 +104,3 @@
     </section>
     <!-- /.content -->
   </div>
-
-  

@@ -8,14 +8,14 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>CG Career</title>
+  <title>Respicite</title>
 
   <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
 
 	<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"> -->
 
   <!-- Google Font: Source Sans Pro -->
-
+  <link href="<?= base_url() ?>assets/logo_36.png" rel="shortcut icon" type="image/png">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
 
   <!-- Font Awesome -->

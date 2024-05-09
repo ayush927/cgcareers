@@ -658,37 +658,43 @@
                                                         <div class="col-md-4 col-xs-12">
                                                             <div class="pro-box w-100">
                                                                 <?php
-                                                                    $image = base_url().'uploads/counsellor-thumb/avatar-100-100.jpg';
+                                                                    $image = DEV_URL.'uploads/counsellor-thumb/avatar-100-100.jpg';
                                                                     if(  isset($profileViewdata["profile_link"]) ){
                                                                         if( $profileViewdata["thumbnail"] == 0 ){
+                                                                            // echo 1;
                                                                             $img_arr = explode('/' , $v['profile_photo'] );
                                                                             if( $img_arr[count($img_arr) - 1] == 'default.png' || $img_arr[count($img_arr) - 1] == 'default.jpg' ){
-                                                                                $image = base_url().'uploads/counsellor-thumb/avatar-100-100.jpg';
-                                                                            }
-                                                                            elseif( file_exists( './uploads/counsellor-thumb/'.$img_arr[count($img_arr) - 1] ) ){
-                                                                                $image = base_url().'uploads/counsellor-thumb/'.$img_arr[count($img_arr) - 1];
+                                                                                $image = DEV_URL.'uploads/counsellor-thumb/avatar-100-100.jpg';
                                                                             }
                                                                             else{
-                                                                                // echo 1;
-                                                                                $image = LIVE_URL.'uploads/'.$img_arr[count($img_arr) - 1];
+                                                                                $pageDocument = @file_get_contents(DEV_URL.'./uploads/'.$img_arr[count($img_arr) - 1]);
+                                                                                if( $pageDocument == FALSE ){
+                                                                                    // echo 1;
+                                                                                    $image = LIVE_URL.'uploads/'.$img_arr[count($img_arr) - 1];
+                                                                                }
+                                                                                else{
+                                                                                    // echo 2;
+                                                                                    $image = DEV_URL.'uploads/'.$img_arr[count($img_arr) - 1];
+                                                                                }
                                                                             }
-                                                                            // $image = base_url().'uploads/counsellor-thumb/avatar-100-100.jpg';
+                                                                            // $image = base_url.'uploads/counsellor-thumb/avatar-100-100.jpg';
                                                                         }
                                                                         else{
+                                                                            // echo 2;
                                                                             $img_arr = explode('/' , $v['profile_photo'] );
                                                                             if( $img_arr[count($img_arr) - 1] == 'default.png' || $img_arr[count($img_arr) - 1] == 'default.jpg' ){
-                                                                                $image = base_url().'uploads/counsellor-thumb/avatar-100-100.jpg';
+                                                                                $image = LIVE_URL.'uploads/counsellor-thumb/avatar-100-100.jpg';
                                                                             }
                                                                             else{
                                                                                 if( file_exists( './uploads/counsellor-thumb/'.$img_arr[count($img_arr) - 1] ) ){
-                                                                                    $image = base_url().'uploads/counsellor-thumb/'.$img_arr[count($img_arr) - 1];
+                                                                                    $image = LIVE_URL.'uploads/counsellor-thumb/'.$img_arr[count($img_arr) - 1];
                                                                                 }
                                                                                 else{
                                                                                     // echo 2;
                                                                                         $image = LIVE_URL.'uploads/'.$img_arr[count($img_arr) - 1];
                                                                                     // }
                                                                                     // else{
-                                                                                    //     $image = base_url().'uploads/counsellor-thumb/avatar-100-100.jpg';
+                                                                                    //     $image = base_url.'uploads/counsellor-thumb/avatar-100-100.jpg';
                                                                                 }
                                                                             }
                                                                         }

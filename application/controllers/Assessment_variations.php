@@ -754,7 +754,7 @@
             }
         }
 
-        function variation_time_update( $code  , $partName )
+        function variation_time_update( $code  , $partName)
         {
             $_SESSION['timer'][$partName] = true;
             $dateTime = date('Y-m-d H:i:s');

@@ -67,8 +67,6 @@
       margin: 0;
       padding: 0;
       list-style-type: none;
-      display: flex;
-      justify-content: center;
     }
 
     /* Horizontal alignment */
@@ -555,7 +553,7 @@
                                           if( !empty($reportStatus) ){
                                             // if( !empty($reportControl) ){
                                             if( $reportStatus['status'] == 1 ){
-                                              echo "1";
+                                              // echo "1";
                                               if( $reportStatus['mannual_status'] == 1 ){
                                                   if( !empty($getCodeRow) ){
                                                     if( $getCodeRow['remark_status'] !=  0 ){

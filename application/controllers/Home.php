@@ -378,6 +378,72 @@ class Home extends Ci_controller{
                 $json_msg["message"] = "Your Request has been forwarded to the counsellor.The team shall connect with you.";
             }
             $this->output->set_content_type('application/json')->set_output(json_encode($json_msg));
-            }    
+            
+        }
+        
+        function check_status(){
+            if( !isset($_GET['email_id']) ){
+                $data['code'] = null;
+                $this->load->view("check_status" , $data);
+            }
+            else{
+                $data['code'] = null;
+                $checkUserExist = getQuery( [ 'where' => [ 'email' => $_GET['email_id'] ] , 'where_in' => [ 'iam' => [ 'reseller' , 'sp' ] ] , 'table' => 'user_details' , 'single' => true ] );
+                // lQ(1);
+                // pre(  $checkUserExist , 1);
+                if( !empty(  $checkUserExist ) ){
+                    $detail_seo = getQuery( [ 'where' => [ 'user_id' => $checkUserExist['id'] ] , 'table' => 'user_details_seo' , 'single' => true ] );
+                    
+                    $data['status']['Registration'] = 'Partner Counsellor';
+                    $data['status']['iam'] = $checkUserExist['iam'];
+                    
+                    $data['status']['Your Primary Service'] = ( $checkUserExist['serviceName'] != '' ?  $checkUserExist['serviceName'] : ( !empty( $detail_seo ) ? $detail_seo['services']  : 'No Services') );
+                    
+                    $data['status']['Your onboarding document'] = 'https://drive.google.com/drive/folders/1nra0lpKbgUsOMk732ObhQBjlOOg-bIa9?usp=sharing';
+                    
+                    $data['status']['Counsellor Dashboard Login'] = base_url().'userController/login/'.( !is_numeric($checkUserExist['user_id']) ? base64_encode( $checkUserExist['user_id'] ) : '' );
+                    
+                    $data['status']['Your Public Profile'] = ( $checkUserExist['profile_link'] != '' ? base_url().'counselors-view/'.$checkUserExist['profile_link'] : '' );
+                    
+                    $serviceArr = explode( ',' , $data['status']['Your Primary Service'] );
+                    // pre( $serviceArr , 1 );
+                    if( !empty( $serviceArr ) ){
+                        if( in_array( 'Career Counselling' , $serviceArr ) || in_array( 'Career Explorer' , $serviceArr ) || in_array( 'Career Builder' , $serviceArr ) || in_array( 'Positive Parenting' , $serviceArr ) || in_array( 'Parenting Counselling' , $serviceArr ) ){
+                            $data['status']['Your Training Resources'] = 'https://drive.google.com/drive/folders/11XlZdJ3MoozcCAsFKRbIEfIL35mwGUaa?usp=drive_link';
+                        }
+                        elseif( in_array( 'Overseas Services' , $serviceArr ) || in_array( 'Overseas Counselling' , $serviceArr ) || in_array( 'Overseas Companion' , $serviceArr ) ){
+                            $data['status']['Your Training Resources'] = 'https://drive.google.com/drive/folders/1O9QyLeZILAsYprDFAfo0KZ_-3UlG7MlD?usp=drive_link';
+                        }
+                        else{
+                            $data['status']['Your Training Resources'] = '';
+                        }
+                    }
+                    else{
+                        $data['status']['Your Training Resources'] = '';
+                    }
+                    
+                    $data['status']['New Student Registration'] = base_url().'BaseController/registration/'.base64_encode($checkUserExist['user_id']);
+                    
+                    $data['status']['Existing Student Login'] = base_url().'BaseController/login/'.base64_encode($checkUserExist['user_id']);
+                    
+
+                }
+                else{
+                    $checkUser = getQuery( [ 'where' => [ 'email' => $_GET['email_id'] , 'iam' => 'user' ] , 'single' => true  , 'table' => 'user_details' ] );
+                    if( !empty( $checkUser ) ){
+                        $data['status']['Registration'] = 'Student User';
+                        $data['status']['iam'] = 'user';
+                        $data['status']['Dashboard Login'] = base_url().'baseController/login/'.(base64_encode( $checkUser['user_id'] ));
+                    }
+                    else{
+                        $data['status']['iam'] = '';
+                        $data['status']['Registration'] = 'Not Registered';
+                        $data['status']['Register as Partner Counsellor'] = base_url().'UserController/registration/';
+                        $data['status']['Register as Student User'] = base_url().'BaseController/registration/';
+                    }
+                }
+                $this->load->view("check_status" , $data);
+            }
+        }
     }
 ?>
