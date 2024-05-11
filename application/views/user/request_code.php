@@ -1,8 +1,8 @@
 <style>
 
-a{
-  color:black;
-}
+a{color:black;}
+
+
 
 .btn-my{
 
@@ -440,7 +440,7 @@ $email = $user['email'];
                                                       }
                                                       else{
                                                         ?>
-                                                          <a style='pointer-events: none;' class="btn btn-sm btn-outline-secondary btn-my" href="<?php echo base_url(); ?>BaseController/user_request_code/<?php echo $email; ?>/<?php echo $r_email; ?>/<?php echo $solution; ?>/<?php echo $dsn; ?>">Pay offline</a>
+                                                          <a class="btn btn-sm btn-outline-secondary btn-my" href="<?php echo base_url(); ?>BaseController/user_request_code/<?php echo $email; ?>/<?php echo $r_email; ?>/<?php echo $solution; ?>/<?php echo $dsn; ?>">Pay offline</a>
 
                                                         <?php
                                                             // }
@@ -457,7 +457,7 @@ $email = $user['email'];
 
                                                         
 
-                                                          <a style='pointer-events: none;' class="btn btn-sm btn-outline-success mt-2" href="<?php echo base_url(); ?>BaseController/user_request_code_online/<?php echo $email; ?>/<?php echo $r_email; ?>/<?php echo $sl->id; ?>">Pay online</a>
+                                                          <a  class="btn btn-sm btn-outline-success mt-2" href="<?php echo base_url(); ?>BaseController/user_request_code_online/<?php echo $email; ?>/<?php echo $r_email; ?>/<?php echo $sl->id; ?>">Pay online</a>
 
                                                           <?php        
 

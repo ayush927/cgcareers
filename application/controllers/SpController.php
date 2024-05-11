@@ -2,7 +2,8 @@
 
 class SpController extends CI_Controller
 {
-    public function __construct(){
+    public function __construct()
+    {
         parent::__construct();
         $this->load->model("Sp_model");
         $this->load->model("User_model");
@@ -136,12 +137,6 @@ class SpController extends CI_Controller
 
     public function view_sp_profile()
     {
-        // $this->load->model('User_model');
-        // if($this->User_model->authorized()==false)
-        // {
-        //     $this->session->set_flashdata('msg','You are not authorized to access this section');
-        //     redirect(base_url().'/UserController/login');
-        // }
         $data = $this->initializer();
         $user = $this->session->userdata("user");
         $data["user"] = $user;
@@ -153,12 +148,6 @@ class SpController extends CI_Controller
     }
     public function edit_sp_profile()
     {
-        // $this->load->model('User_model');
-        // if($this->User_model->authorized()==false)
-        // {
-        //     $this->session->set_flashdata('msg','You are not authorized to access this section');
-        //     redirect(base_url().'/UserController/login');
-        // }
         $data = $this->initializer();
         $user = $this->session->userdata("user");
         $data["user"] = $user;
@@ -234,7 +223,6 @@ class SpController extends CI_Controller
         $data["user"] = $user;
         $email = $user["email"];
         $this->load->view("navbar", $data);
-        //$this->load->view('sp/sidebar' , $data);
         if ($user["iam"] == "reseller") {
             $this->load->view("sidebar", $data);
         } else {
@@ -266,7 +254,6 @@ class SpController extends CI_Controller
         $email = $user["email"];
         $this->db->where("email", $email);
         $num = $this->db->get("provider_detail_first")->num_rows();
-        // pre( $num  , 1);
         if ($num == 0) {
             $level["l"] = $this->Sp_model->provider_level_list();
             $page = "sp/complete_profile";
@@ -361,8 +348,6 @@ class SpController extends CI_Controller
                         "l3" => "0",
                     ];
                     $this->db->insert("provider_detail_three", $formArray);
-
-                    //if market_place service, make entry into services_marketplace table also
                 }
                 $this->session->set_flashdata("msg2", "Details Saved");
                 redirect(base_url() . "/SpController/l4");
@@ -452,7 +437,6 @@ class SpController extends CI_Controller
                 "where" => ["user_id" => 13],
                 "where_not_in_numeric" => $where_not_in_numeric,
             ]);
-            // lQ(1);
         } else {
             $defaultList = getQuery([
                 "select" =>
@@ -470,8 +454,6 @@ class SpController extends CI_Controller
         }
 
         $data["list"] = array_merge($userList, $defaultList);
-
-        // pre( $data['list'] , 1 );
 
         $this->load->view("navbar", $data);
 
@@ -521,7 +503,6 @@ class SpController extends CI_Controller
                 "single" => true,
             ]);
             if (!empty($data["edit"])) {
-                // pre( $data['edit']  , 1);
                 $_GET["solution_name"] = $data["edit"]["solution_name"];
             }
         }
@@ -538,7 +519,6 @@ class SpController extends CI_Controller
                 "where" => ["solution_name" => $_GET["solution_name"]],
             ]);
         }
-        // pre( $data , 1 );
         $this->load->view("navbar", $data);
 
         $this->load->view("sp/sidebar", $data);
@@ -1044,67 +1024,20 @@ class SpController extends CI_Controller
     public function spprofile()
     {
         $this->load->library("form_validation");
-
-        // $this->load->model('User_model');
-
         $this->load->model("Sp_model");
-
-        // $this->load->model('Admin_model');
-
-        // if($this->User_model->authorized()==false)
-
-        // {
-
-        //     $this->session->set_flashdata('msg','You are not authorized to access this section');
-
-        //     redirect(base_url().'/UserController/login');
-
-        // }
-
         $data = $this->initializer();
-
         $user = $this->session->userdata("user");
-
         $data["user"] = $user;
-
-        //
-
-        // $data['allowed_services'] = $this->Admin_model->getUserDetailsById($user['id']);
-
         $email = $user["email"];
-
         $data["allowed_services"] = $this->Admin_model->getUserDetailsById(
             $user["id"]
         );
-
-        // $landing = $this->User_model->landingId($user['id']);
-
-        // $data['landing']= $this->Admin_model->get_landing_data_by_user($landing['landing_id']);
-
         $this->db->where("email", $email);
-
         $level1["l"] = $this->db->get("provider_detail_four");
-
-        // foreach($l1->result() as $l1)
-
-        // {
-
-        //     $l=$l1->l1;
-
-        //     $this->db->where('id',$l);
-
-        //     $level1['l'] = $this->db->get('provider_level_one');
-
-        // }
-
         $solution["s"] = $this->User_model->solutions_list();
-
         $this->load->view("navbar", $data);
-
         $this->load->view("sp/sidebar", $data);
-
         $this->load->view("sp/spprofile", $level1);
-
         $this->load->view("footer");
     }
 
@@ -1130,7 +1063,6 @@ class SpController extends CI_Controller
                 ]);
                 $profile_link = $data["profile_link"];
             } else {
-                // pre( $userData , 1 );
                 $profile_link = $userData["profile_link"];
             }
             $new_name = $profile_link . ".jpg";
@@ -1143,7 +1075,6 @@ class SpController extends CI_Controller
             if (file_exists("./uploads/counsellor-thumb/" . $new_name)) {
                 unlink("./uploads/counsellor-thumb/" . $new_name);
             }
-            // die;
             $config["file_name"] = $new_name;
             $this->load->library("upload", $config);
             if (!$this->upload->do_upload("img")) {
@@ -1209,9 +1140,6 @@ class SpController extends CI_Controller
     public function sp_detail()
     {
         if (isset($_POST["savebtn"])) {
-            // pre( $_SERVER  );
-            // pre( $_POST , 1  );
-
             $this->form_validation->set_rules(
                 "aboutus",
                 "About us",
@@ -1241,9 +1169,6 @@ class SpController extends CI_Controller
                 $exception_list = $this->config->item(
                     "profile_complete_exception"
                 );
-
-                check_profile($user, $exception_list);
-
                 $this->session->set_flashdata("msg2", "Saved Successfully");
 
                 redirect("/SpController/spprofile", "refresh");
@@ -1253,9 +1178,6 @@ class SpController extends CI_Controller
                 redirect("/SpController/spprofile", "refresh");
             }
         }
-        // else{
-        //     redirect('/SpController/spprofile','refresh');
-        // }
     }
 
     public function contact()
@@ -1477,8 +1399,6 @@ class SpController extends CI_Controller
                     "profile_complete_exception"
                 );
 
-                check_profile($user, $exception_list);
-
                 $this->session->set_flashdata("msg2", "Saved Successfully");
 
                 redirect("/SpController/spprofile", "refresh");
@@ -1522,8 +1442,6 @@ class SpController extends CI_Controller
         $level["lk"] = $this->Admin_model->provider_level_list();
 
         $level["sk"] = $this->Admin_model->provider_level3_list();
-
-        // $level['s'] = $this->User_model->solutions_list();
 
         $where = "iam='sp' and status!='0'";
 
@@ -1734,8 +1652,6 @@ class SpController extends CI_Controller
 
         $level["sk"] = $this->Admin_model->provider_level3_list();
 
-        // $level['s'] = $this->User_model->solutions_list();
-
         $where = "iam='sp' and status!='0' and id>=$num";
 
         $this->db->where($where);
@@ -1743,8 +1659,6 @@ class SpController extends CI_Controller
         $this->db->limit("6");
 
         $level["l"] = $this->db->get("user_details");
-
-        // $this->load->view('navbar');
 
         $this->load->view("sp/header3");
 
@@ -1843,23 +1757,7 @@ class SpController extends CI_Controller
 
     public function become_partner_counselor()
     {
-        // $this->load->model('User_model');
-
-        // $this->load->model('Base_model');
-
         $this->load->model("Sp_model");
-
-        // $this->load->model('Commen_model');
-
-        // if($this->User_model->authorized()==false)
-
-        // {
-
-        //     $this->session->set_flashdata('msg','You are not authorized to access this section');
-
-        //     redirect(base_url().'/UserController/login');
-
-        // }
 
         $data = $this->initializer();
 
@@ -1873,22 +1771,6 @@ class SpController extends CI_Controller
 
         $code["s"] = $this->Sp_model->solution_list();
 
-        // echo "<pre>";
-
-        // print_r($code['s']);die();
-
-        // $this->db->select('iam');
-
-        // $this->db->where('id', $user['id']);
-
-        // $qry = $this->db->get('user_details');
-
-        // $data['user']['iam'] = $qry->row_array()['iam'];
-
-        // $data['mainmenu'] = $this->Commen_model->get_marketplace_menu($data['user']['iam']);
-
-        // $data['submenu'] = $this->Commen_model->get_marketplace_submenu($data['user']['iam']);
-
         $this->load->view("navbar", $data);
 
         $this->load->view("sp/sidebar", $data);
@@ -1896,7 +1778,7 @@ class SpController extends CI_Controller
         $this->load->view(
             "sp/view_solutions_for_become_partner_counseler",
             $code
-        ); //replace with view_approve_code
+        );
 
         $this->load->view("footer");
     }
@@ -2003,8 +1885,6 @@ class SpController extends CI_Controller
 
         $grp = str_replace("%20", " ", $grp);
 
-        //echo $grp;die();
-
         if ($this->User_model->authorized() == false) {
             $this->session->set_flashdata(
                 "msg",
@@ -2053,8 +1933,6 @@ class SpController extends CI_Controller
                     $ob_no_ce
             );
         } elseif ($grp == "Overseas Companion") {
-            //echo "in else if";die();
-
             $ob_no_ce = 1;
 
             redirect(
@@ -2064,10 +1942,6 @@ class SpController extends CI_Controller
             );
         }
 
-        // var_dump($grp);
-
-        // echo "reached here<br>";die;
-
         $this->load->view("navbar", $data);
 
         if ($user["iam"] == "reseller") {
@@ -2076,7 +1950,7 @@ class SpController extends CI_Controller
             $this->load->view("sp/sidebar", $data);
         }
 
-        $this->load->view("sp/view_solutions_for_become_partner_counseler"); //replace with view_approve_code
+        $this->load->view("sp/view_solutions_for_become_partner_counseler");
 
         $this->load->view("footer");
     }
@@ -2137,8 +2011,6 @@ class SpController extends CI_Controller
 
         $count = $this->db->get("partner_counselor_parenting")->num_rows();
 
-        // echo $count;
-
         $mod = fmod($count, 5);
 
         $count_value = $count - $mod;
@@ -2150,8 +2022,6 @@ class SpController extends CI_Controller
         }
 
         $qlist["q"] = $this->Sp_model->ppot_question($num);
-
-        // lQ(1);
 
         $this->load->view("navbar3", $data);
 
@@ -2268,10 +2138,6 @@ class SpController extends CI_Controller
                         $i++;
                     }
 
-                    //that code used after fourth asssessment
-
-                    // $this->Base_model->update_code_status($code);
-
                     $where = "email='$email' and grp='Positive Parenting'";
 
                     $this->db->where($where);
@@ -2283,10 +2149,6 @@ class SpController extends CI_Controller
                     redirect(
                         base_url() . "SpController/score_calculation/ppot/O1"
                     );
-
-                    // $this->session->set_flashdata('msg','Assessment Compeleted Please Wait for Report');
-
-                    // redirect(base_url().'SpController/become_partner_counselor');
                 } else {
                     $this->session->set_flashdata("msg", validation_errors());
 
@@ -2336,8 +2198,6 @@ class SpController extends CI_Controller
 
         $r = $this->db->get("partner_counselor_status")->row();
 
-        //echo $r->nature;die();
-
         if ($r->nature != "") {
             $ob = $r->nature;
         } else {
@@ -2356,8 +2216,6 @@ class SpController extends CI_Controller
             ->get("partner_counselor_career_explorer")
             ->num_rows();
 
-        // echo $count;
-
         $mod = fmod($count, 5);
 
         $count_value = $count - $mod;
@@ -2373,8 +2231,6 @@ class SpController extends CI_Controller
         $this->db->where($where);
 
         $qno = $this->db->get("ppe_part1_test_details")->num_rows();
-
-        // lQ(1);
 
         if ($qno == 0) {
             $num = "1";
@@ -2394,8 +2250,6 @@ class SpController extends CI_Controller
         }
 
         $qlist["q"] = $this->Sp_model->ceot_question($ob, $num);
-
-        // lQ(1);
 
         $this->load->view("navbar3", $data);
 
@@ -2485,8 +2339,6 @@ class SpController extends CI_Controller
                     "required"
                 );
 
-                // $this->form_validation->set_rules('radio2','Second Question','required');
-
                 if ($this->form_validation->run() == true) {
                     $i = 1;
 
@@ -2510,10 +2362,6 @@ class SpController extends CI_Controller
                         $i++;
                     }
 
-                    //that code used after fourth asssessment
-
-                    // $this->Base_model->update_code_status($code);
-
                     $where = "email='$email' and grp='Career Explorer'";
 
                     $this->db->where($where);
@@ -2527,10 +2375,6 @@ class SpController extends CI_Controller
                             "SpController/score_calculation/ceot/" .
                             $ob
                     );
-
-                    // $this->session->set_flashdata('msg','Assessment Compeleted Please Wait for Report');
-
-                    // redirect(base_url().'SpController/become_partner_counselor');
                 } else {
                     $this->session->set_flashdata("msg", validation_errors());
 
@@ -2597,8 +2441,6 @@ class SpController extends CI_Controller
 
         $count = $this->db->get("partner_counselor_cmb")->num_rows();
 
-        // echo $count;
-
         $mod = fmod($count, 5);
 
         $count_value = $count - $mod;
@@ -2633,8 +2475,6 @@ class SpController extends CI_Controller
         }
 
         $qlist["q"] = $this->Sp_model->cexot_question($ob, $num);
-
-        // lQ(1);
 
         $this->load->view("navbar3", $data);
 
@@ -2724,8 +2564,6 @@ class SpController extends CI_Controller
                     "required"
                 );
 
-                // $this->form_validation->set_rules('radio2','Second Question','required');
-
                 if ($this->form_validation->run() == true) {
                     $i = 1;
 
@@ -2748,10 +2586,6 @@ class SpController extends CI_Controller
 
                         $i++;
                     }
-
-                    //that code used after fourth asssessment
-
-                    // $this->Base_model->update_code_status($code);
 
                     $where = "email='$email' and grp='Career Builder'";
 
@@ -2831,8 +2665,6 @@ class SpController extends CI_Controller
         $this->db->where("Modified_Nature", $ob);
 
         $count = $this->db->get("partner_counselor_cmb")->num_rows();
-
-        // echo $count;
 
         $mod = fmod($count, 5);
 
@@ -2956,8 +2788,6 @@ class SpController extends CI_Controller
                     "required"
                 );
 
-                // $this->form_validation->set_rules('radio2','Second Question','required');
-
                 if ($this->form_validation->run() == true) {
                     $i = 1;
 
@@ -2980,10 +2810,6 @@ class SpController extends CI_Controller
 
                         $i++;
                     }
-
-                    //that code used after fourth asssessment
-
-                    // $this->Base_model->update_code_status($code);
 
                     $where = "email='$email' and grp='Career Excellence'";
 
@@ -3047,17 +2873,11 @@ class SpController extends CI_Controller
 
         $email = $user["email"];
 
-        //echo $email;die();
-
         $where2 = "email='$email' and grp='$grp'";
 
         $this->db->where($where2);
 
         $r = $this->db->get("partner_counselor_status")->row();
-
-        // echo "test";
-
-        // print_r($r);die();
 
         if ($r->nature != "") {
             $ob = $r->nature;
@@ -3074,8 +2894,6 @@ class SpController extends CI_Controller
         $this->db->where("Modified_Nature", $ob);
 
         $count = $this->db->get($tbl_exam)->num_rows();
-
-        // echo $count;
 
         $mod = fmod($count, 5);
 
@@ -3111,8 +2929,6 @@ class SpController extends CI_Controller
         }
 
         $qlist["q"] = $this->Sp_model->ocoxt_question($ob, $num, $solution);
-
-        // lQ(1);
 
         $this->load->view("navbar3", $data);
 
@@ -3201,8 +3017,6 @@ class SpController extends CI_Controller
                     "required"
                 );
 
-                // $this->form_validation->set_rules('radio2','Second Question','required');
-
                 if ($this->form_validation->run() == true) {
                     $i = 1;
 
@@ -3225,10 +3039,6 @@ class SpController extends CI_Controller
 
                         $i++;
                     }
-
-                    //that code used after fourth asssessment
-
-                    // $this->Base_model->update_code_status($code);
 
                     $where = "email='$email' and grp='$grp'";
 
@@ -3294,17 +3104,11 @@ class SpController extends CI_Controller
 
         $email = $user["email"];
 
-        //echo $email;die();
-
         $where2 = "email='$email' and grp='$grp'";
 
         $this->db->where($where2);
 
         $r = $this->db->get("partner_counselor_status")->row();
-
-        // echo "test";
-
-        // print_r($r);die();
 
         if ($r->nature != "") {
             $ob = $r->nature;
@@ -3321,8 +3125,6 @@ class SpController extends CI_Controller
         $this->db->where("Modified_Nature", $ob);
 
         $count = $this->db->get($tbl_exam)->num_rows();
-
-        // echo $count;
 
         $mod = fmod($count, 5);
 
@@ -3446,8 +3248,6 @@ class SpController extends CI_Controller
                     "required"
                 );
 
-                // $this->form_validation->set_rules('radio2','Second Question','required');
-
                 if ($this->form_validation->run() == true) {
                     $i = 1;
 
@@ -3470,10 +3270,6 @@ class SpController extends CI_Controller
 
                         $i++;
                     }
-
-                    //that code used after fourth asssessment
-
-                    // $this->Base_model->update_code_status($code);
 
                     $where = "email='$email' and grp='$grp'";
 
@@ -3770,8 +3566,6 @@ class SpController extends CI_Controller
         $ob_no_ce = 1;
 
         if ($grp == "Career Explorer") {
-            //echo $ob_no_ce."<br>";
-
             redirect(
                 base_url() .
                     "/SpController/career_explorer_ce_test/" .
@@ -3811,7 +3605,7 @@ class SpController extends CI_Controller
             $this->load->view("sp/sidebar", $data);
         }
 
-        $this->load->view("sp/view_solutions_for_become_partner_counseler"); //replace with view_approve_code
+        $this->load->view("sp/view_solutions_for_become_partner_counseler");
 
         $this->load->view("footer");
     }
@@ -3884,8 +3678,6 @@ class SpController extends CI_Controller
 
         $qlist["q"] = $this->Sp_model->ppct_question($num);
 
-        // lQ(1);
-
         $this->load->view("navbar3", $data);
 
         if ($user["iam"] == "reseller") {
@@ -3999,10 +3791,6 @@ class SpController extends CI_Controller
                         $i++;
                     }
 
-                    //that code used after fourth asssessment
-
-                    // $this->Base_model->update_code_status($code);
-
                     $where = "email='$email' and grp='Positive Parenting'";
 
                     $this->db->where($where);
@@ -4014,10 +3802,6 @@ class SpController extends CI_Controller
                     redirect(
                         base_url() . "SpController/ce_score_calculation/ppct/T1"
                     );
-
-                    // $this->session->set_flashdata('msg','Assessment Compeleted Please Wait for Report');
-
-                    // redirect(base_url().'SpController/become_partner_counselor');
                 } else {
                     $this->session->set_flashdata("msg", validation_errors());
 
@@ -4032,8 +3816,6 @@ class SpController extends CI_Controller
     public function career_explorer_ce_test($ob_no)
     {
         $ob = "C" . $ob_no;
-
-        //echo "<h1>career_explorer_ce_test </h1>";die();
 
         $code = "cect";
 
@@ -4086,8 +3868,6 @@ class SpController extends CI_Controller
             ->get("partner_counselor_career_explorer")
             ->num_rows();
 
-        //echo $count;die();
-
         $mod = fmod($count, 5);
 
         $count_value = $count - $mod;
@@ -4122,12 +3902,6 @@ class SpController extends CI_Controller
         }
 
         $qlist["q"] = $this->Sp_model->cect_question($ob, $num);
-
-        // lQ(1);
-
-        // echo "<pre>$code";
-
-        // print_r($qlist['q']->result_array());echo "</pre>";die();
 
         $this->load->view("navbar3", $data);
 
@@ -4217,8 +3991,6 @@ class SpController extends CI_Controller
                     "required"
                 );
 
-                // $this->form_validation->set_rules('radio2','Second Question','required');
-
                 if ($this->form_validation->run() == true) {
                     $i = 1;
 
@@ -4242,10 +4014,6 @@ class SpController extends CI_Controller
                         $i++;
                     }
 
-                    //that code used after fourth asssessment
-
-                    // $this->Base_model->update_code_status($code);
-
                     $where = "email='$email' and grp='Career Explorer'";
 
                     $this->db->where($where);
@@ -4259,10 +4027,6 @@ class SpController extends CI_Controller
                             "SpController/ce_score_calculation/cect/" .
                             $ob
                     );
-
-                    // $this->session->set_flashdata('msg','Assessment Compeleted Please Wait for Report');
-
-                    // redirect(base_url().'SpController/become_partner_counselor');
                 } else {
                     $this->session->set_flashdata("msg", validation_errors());
 
@@ -4280,8 +4044,6 @@ class SpController extends CI_Controller
     {
         $ob = "C" . $ob_no;
 
-        // echo "<h1>career_explorer_ce_test </h1>";
-
         $code = "cect";
 
         $this->load->model("User_model");
@@ -4332,8 +4094,6 @@ class SpController extends CI_Controller
         $count = $this->db
             ->get("partner_counselor_career_explorer")
             ->num_rows();
-
-        // echo $count;
 
         $mod = fmod($count, 5);
 
@@ -4458,8 +4218,6 @@ class SpController extends CI_Controller
                     "required"
                 );
 
-                // $this->form_validation->set_rules('radio2','Second Question','required');
-
                 if ($this->form_validation->run() == true) {
                     $i = 1;
 
@@ -4483,10 +4241,6 @@ class SpController extends CI_Controller
                         $i++;
                     }
 
-                    //that code used after fourth asssessment
-
-                    // $this->Base_model->update_code_status($code);
-
                     $where = "email='$email' and grp='Career Explorer'";
 
                     $this->db->where($where);
@@ -4500,10 +4254,6 @@ class SpController extends CI_Controller
                             "SpController/ce_score_calculation/cect/" .
                             $ob
                     );
-
-                    // $this->session->set_flashdata('msg','Assessment Compeleted Please Wait for Report');
-
-                    // redirect(base_url().'SpController/become_partner_counselor');
                 } else {
                     $this->session->set_flashdata("msg", validation_errors());
 
@@ -4570,8 +4320,6 @@ class SpController extends CI_Controller
 
         $count = $this->db->get("partner_counselor_cmb")->num_rows();
 
-        // echo $count;
-
         $mod = fmod($count, 5);
 
         $count_value = $count - $mod;
@@ -4621,8 +4369,6 @@ class SpController extends CI_Controller
 
         if (isset($_POST["saveBtn"])) {
             if ($num != $count_value) {
-                // echo "<h1> num != count_value</h1>";
-
                 $this->form_validation->set_rules(
                     "radio1",
                     "First Question",
@@ -4697,8 +4443,6 @@ class SpController extends CI_Controller
                     "required"
                 );
 
-                // $this->form_validation->set_rules('radio2','Second Question','required');
-
                 if ($this->form_validation->run() == true) {
                     $i = 1;
 
@@ -4722,10 +4466,6 @@ class SpController extends CI_Controller
                         $i++;
                     }
 
-                    //that code used after fourth asssessment
-
-                    // $this->Base_model->update_code_status($code);
-
                     $where = "email='$email' and grp='Career Excellence'";
 
                     $this->db->where($where);
@@ -4739,10 +4479,6 @@ class SpController extends CI_Controller
                             "SpController/ce_score_calculation/cexct/" .
                             $ob
                     );
-
-                    // $this->session->set_flashdata('msg','Assessment Compeleted Please Wait for Report');
-
-                    // redirect(base_url().'SpController/become_partner_counselor');
                 } else {
                     $this->session->set_flashdata("msg", validation_errors());
 
@@ -4809,8 +4545,6 @@ class SpController extends CI_Controller
 
         $count = $this->db->get("partner_counselor_cmb")->num_rows();
 
-        // echo $count;
-
         $mod = fmod($count, 5);
 
         $count_value = $count - $mod;
@@ -4845,8 +4579,6 @@ class SpController extends CI_Controller
         }
 
         $qlist["q"] = $this->Sp_model->cexct_question($ob, $num);
-
-        // lQ(1);
 
         $this->load->view("navbar3", $data);
 
@@ -4936,8 +4668,6 @@ class SpController extends CI_Controller
                     "required"
                 );
 
-                // $this->form_validation->set_rules('radio2','Second Question','required');
-
                 if ($this->form_validation->run() == true) {
                     $i = 1;
 
@@ -4961,10 +4691,6 @@ class SpController extends CI_Controller
                         $i++;
                     }
 
-                    //that code used after fourth asssessment
-
-                    // $this->Base_model->update_code_status($code);
-
                     $where = "email='$email' and grp='Career Builder'";
 
                     $this->db->where($where);
@@ -4978,10 +4704,6 @@ class SpController extends CI_Controller
                             "SpController/ce_score_calculation/cbct/" .
                             $ob
                     );
-
-                    // $this->session->set_flashdata('msg','Assessment Compeleted Please Wait for Report');
-
-                    // redirect(base_url().'SpController/become_partner_counselor');
                 } else {
                     $this->session->set_flashdata("msg", validation_errors());
 
@@ -4994,8 +4716,6 @@ class SpController extends CI_Controller
             }
         }
     }
-
-    //overseas companion certification start
 
     public function overseas_companion_ce_test2($ob_no)
     {
@@ -5056,10 +4776,6 @@ class SpController extends CI_Controller
 
         $count = $this->db->get($tbl_exam)->num_rows();
 
-        //echo "count".$count."<br>";
-
-        // echo $count;
-
         $mod = fmod($count, 5);
 
         echo $mod . "<br>";
@@ -5068,21 +4784,15 @@ class SpController extends CI_Controller
 
         $count_value = $count_value + 1;
 
-        //echo $count_value."<br>";
-
         if ($mod == 0) {
             $count_value = $count - 4;
         }
-
-        //echo $count_value."<br>";
 
         $where = "email='$email' and code='$code' and solution='$solution'";
 
         $this->db->where($where);
 
         $qno = $this->db->get("ppe_part1_test_details")->num_rows();
-
-        //echo $qno."<br>";
 
         if ($qno == 0) {
             $num = "1";
@@ -5103,13 +4813,7 @@ class SpController extends CI_Controller
 
         echo $num . "<br>";
 
-        //die;
-
         $qlist["q"] = $this->Sp_model->ocoxt_question($ob, $num, $solution);
-
-        //echo "<pre>";
-
-        //print_r($qlist);die();
 
         $this->load->view("navbar3", $data);
 
@@ -5199,8 +4903,6 @@ class SpController extends CI_Controller
                     "required"
                 );
 
-                // $this->form_validation->set_rules('radio2','Second Question','required');
-
                 if ($this->form_validation->run() == true) {
                     $i = 1;
 
@@ -5224,10 +4926,6 @@ class SpController extends CI_Controller
                         $i++;
                     }
 
-                    //that code used after fourth asssessment
-
-                    // $this->Base_model->update_code_status($code);
-
                     $where = "email='$email' and grp='$grp'";
 
                     $this->db->where($where);
@@ -5241,10 +4939,6 @@ class SpController extends CI_Controller
                             "SpController/overseas_companion_ce_test2/occxt/" .
                             $ob
                     );
-
-                    // $this->session->set_flashdata('msg','Assessment Compeleted Please Wait for Report');
-
-                    // redirect(base_url().'SpController/become_partner_counselor');
                 } else {
                     $this->session->set_flashdata("msg", validation_errors());
 
@@ -5258,24 +4952,8 @@ class SpController extends CI_Controller
         }
     }
 
-    // Add by new function by Danish #START here.
-
     public function page_change_logo()
     {
-        // $this->load->model('User_model');
-
-        // $this->load->model('Admin_model');
-
-        // if($this->User_model->authorized()==false)
-
-        // {
-
-        //     $this->session->set_flashdata('msg','You are not authorized to access this section');
-
-        //     redirect(base_url().'/UserController/login');
-
-        // }
-
         $data = $this->initializer();
 
         $user = $this->session->userdata("user");
@@ -5342,8 +5020,6 @@ class SpController extends CI_Controller
 
                 $this->db->update("reseller_homepage");
 
-                check_profile($user);
-
                 $this->session->set_flashdata("msg2", "Saved Successfully");
 
                 redirect("/SpController/page_change_logo", "refresh");
@@ -5353,20 +5029,6 @@ class SpController extends CI_Controller
 
     public function page_change_banner()
     {
-        // $this->load->model('User_model');
-
-        // $this->load->model('Admin_model');
-
-        // if($this->User_model->authorized()==false)
-
-        // {
-
-        //     $this->session->set_flashdata('msg','You are not authorized to access this section');
-
-        //     redirect(base_url().'/UserController/login');
-
-        // }
-
         $data = $this->initializer();
 
         $user = $this->session->userdata("user");
@@ -5468,20 +5130,6 @@ class SpController extends CI_Controller
 
     public function company_detail()
     {
-        // $this->load->model('User_model');
-
-        // $this->load->model('Admin_model');
-
-        // if($this->User_model->authorized()==false)
-
-        // {
-
-        //     $this->session->set_flashdata('msg','You are not authorized to access this section');
-
-        //     redirect(base_url().'/UserController/login');
-
-        // }
-
         $data = $this->initializer();
 
         $user = $this->session->userdata("user");
@@ -5537,20 +5185,6 @@ class SpController extends CI_Controller
 
     public function change_contact_details()
     {
-        // $this->load->model('User_model');
-
-        // $this->load->model('Admin_model');
-
-        // if($this->User_model->authorized()==false)
-
-        // {
-
-        //     $this->session->set_flashdata('msg','You are not authorized to access this section');
-
-        //     redirect(base_url().'/UserController/login');
-
-        // }
-
         $data = $this->initializer();
 
         $user = $this->session->userdata("user");
@@ -5620,20 +5254,6 @@ class SpController extends CI_Controller
 
     public function change_social_link()
     {
-        // $this->load->model('User_model');
-
-        // $this->load->model('Admin_model');
-
-        // if($this->User_model->authorized()==false)
-
-        // {
-
-        //     $this->session->set_flashdata('msg','You are not authorized to access this section');
-
-        //     redirect(base_url().'/UserController/login');
-
-        // }
-
         $data = $this->initializer();
 
         $user = $this->session->userdata("user");
@@ -5687,18 +5307,6 @@ class SpController extends CI_Controller
 
     public function footer_field()
     {
-        // $this->load->model('User_model');
-
-        //     if($this->User_model->authorized()==false)
-
-        //     {
-
-        //         $this->session->set_flashdata('msg','You are not authorized to access this section');
-
-        //         redirect(base_url().'/UserController/login');
-
-        //     }
-
         $data = $this->initializer();
 
         $user = $this->session->userdata("user");
@@ -5794,20 +5402,6 @@ class SpController extends CI_Controller
 
     public function view_users_list()
     {
-        // $this->load->model('User_model');
-
-        // $this->load->model('Admin_model');
-
-        // if($this->User_model->authorized()==false)
-
-        // {
-
-        //     $this->session->set_flashdata('msg','You are not authorized to access this section');
-
-        //     redirect(base_url().'/UserController/login');
-
-        // }
-
         $data = $this->initializer();
 
         $user = $this->session->userdata("user");
@@ -5831,20 +5425,6 @@ class SpController extends CI_Controller
 
     public function approve_user_code()
     {
-        // $this->load->model('User_model');
-
-        // $this->load->model('Admin_model');
-
-        // if($this->User_model->authorized()==false)
-
-        // {
-
-        //     $this->session->set_flashdata('msg','You are not authorized to access this section');
-
-        //     redirect(base_url().'/UserController/login');
-
-        // }
-
         $data = $this->initializer();
 
         $user = $this->session->userdata("user");
@@ -5857,11 +5437,7 @@ class SpController extends CI_Controller
 
         $email = $user["email"];
 
-        // $data['iam'] = $user['iam'];
-
         $this->load->view("navbar3", $data);
-
-        //$this->load->view( 'sidebar', $data );
 
         $this->load->view("sp/sidebar", $data);
 
@@ -5878,31 +5454,17 @@ class SpController extends CI_Controller
     ) {
         $this->load->model("User_model");
 
-        // echo $email;
-
-        // die;
-
         $user = $this->session->userdata("user");
 
         if ($email == null) {
             $email = $user["email"];
         }
 
-        //echo $email.$solution;die();
-
         $where = "email='$email' and solution='$solution' and status='UnUsed'";
 
         $this->db->where($where);
 
         $num_row = $this->db->get("generated_code_details")->num_rows();
-
-        // echo $this->db->last_query()."<br>";
-
-        // echo "No of rows fetched :".$num_row."<br>";
-
-        // echo "No of Rows ".$num_row;
-
-        // die();
 
         if ($num_row > 0) {
             $where = "email='$email' and solution='$solution' and status='UnUsed'";
@@ -5965,10 +5527,6 @@ class SpController extends CI_Controller
                     $this->db->insert("user_assessment_info", $formArray);
                 }
 
-                // echo $this->session->userdata('isnotloggedin');
-
-                // die;
-
                 if ($this->session->userdata("isnotloggedin")) {
                     $this->db->set("nature", 1);
 
@@ -5979,26 +5537,14 @@ class SpController extends CI_Controller
                     $this->db->update("generated_code_details");
 
                     if ($check != "") {
-                        // echo 3;
-
-                        // die;
-
                         redirect(
                             "/BaseController/view_code/" . $code,
                             "refresh"
                         );
                     } else {
-                        // echo 4;
-
-                        // die;
-
                         $codeData = $this->User_model
                             ->fetch_purchase_code_by_report($solution)
                             ->row_array();
-
-                        // print_r( $codeData );
-
-                        // die;
 
                         $purchaseCodeRequest = [
                             "ccb1" => $codeData["code_id"],
@@ -6015,19 +5561,9 @@ class SpController extends CI_Controller
 
                         redirect("/UserController/save_request_code");
                     }
-
-                    // redirect('/BaseController/view_code/'.$code,"refresh");
                 } elseif ($check == null && $user["iam"] == "user") {
-                    // echo 1;
-
-                    // die;
-
                     redirect("/BaseController/view_code/" . $code, "refresh");
                 }
-
-                // echo 2;
-
-                // die;
 
                 $this->session->set_flashdata("msg", "Code Approved");
 
@@ -6038,10 +5574,6 @@ class SpController extends CI_Controller
                 $codeData = $this->User_model
                     ->fetch_purchase_code_by_report($solution)
                     ->row_array();
-
-                // print_r( $codeData );
-
-                // die;
 
                 $purchaseCodeRequest = [
                     "ccb1" => $codeData["code_id"],
@@ -6068,21 +5600,7 @@ class SpController extends CI_Controller
 
     public function user_buyer($request_generate = null)
     {
-        // $this->load->model('User_model');
-
         $this->load->model("Admin_model");
-
-        // $this->load->model('Base_model');
-
-        // if($this->User_model->authorized()==false)
-
-        // {
-
-        //     $this->session->set_flashdata('msg','You are not authorized to access this section');
-
-        //     redirect(base_url().'/UserController/login');
-
-        // }
 
         $data = $this->initializer();
 
@@ -6176,12 +5694,6 @@ class SpController extends CI_Controller
                             base64_encode($code)
                     );
                 } elseif ($getUserVariation["report_variation"] == "one") {
-                    // echo "H";
-
-                    // pre( $getUserVariation , 1 );
-
-                    // die;
-
                     redirect(
                         base_url() .
                             "OtherAjax/download_report.php?code=" .
@@ -6202,8 +5714,6 @@ class SpController extends CI_Controller
                 }
 
                 $this->session->set_flashdata("msg", "Request generated");
-
-                // redirect('/UserController/user_buyer','refresh');
             } else {
                 $this->session->set_flashdata(
                     "msg",
@@ -6230,10 +5740,6 @@ class SpController extends CI_Controller
             ["user_id" => $user["id"]]
         );
 
-        // echo $this->db->last_query();
-
-        // die;
-
         if ($this->db->affected_rows()) {
             $this->session->set_flashdata("msg", "Status is updated");
 
@@ -6256,10 +5762,6 @@ class SpController extends CI_Controller
             ["code" => $code]
         );
 
-        // echo $this->db->last_query();
-
-        // die;
-
         if ($this->db->affected_rows()) {
             $this->session->set_flashdata(
                 "msg",
@@ -6276,22 +5778,6 @@ class SpController extends CI_Controller
 
     public function purchase_code()
     {
-        //echo "purchase";die();
-
-        // $this->load->model('User_model');
-
-        // $this->load->model('Admin_model');
-
-        // if($this->User_model->authorized()==false)
-
-        // {
-
-        //     $this->session->set_flashdata('msg','You are not authorized to access this section');
-
-        //     redirect(base_url().'/UserController/login');
-
-        // }
-
         $data = $this->initializer();
 
         $user = $this->session->userdata("user");
@@ -6306,14 +5792,6 @@ class SpController extends CI_Controller
 
         $solution["s"] = $this->User_model->solutions_list();
 
-        // echo "<pre>";
-
-        // print_r($solution);
-
-        // echo "</pre>";
-
-        // die;
-
         $this->load->view("navbar3", $data);
 
         $this->load->view("sp/sidebar", $data);
@@ -6325,8 +5803,6 @@ class SpController extends CI_Controller
 
     public function save_request_code()
     {
-        //echo "save";die();
-
         if (isset($_POST["purchase"])) {
             error_reporting(0);
 
@@ -6335,8 +5811,6 @@ class SpController extends CI_Controller
             for ($i = 0; $i <= $count; $i++) {
                 if ($i == 0) {
                     $op[] = "";
-
-                    //nothing
                 } else {
                     $code = "ccb" . $i;
 
@@ -6353,16 +5827,6 @@ class SpController extends CI_Controller
             $email = $user["email"];
 
             $status = "pending";
-
-            // $id = 'ccb1';
-
-            // $op[] = $_POST[$id];
-
-            // $op[] = $_POST['ccb2'];
-
-            // $op[] = $_POST['ccb3'];
-
-            // $op[] = $_POST['ccb4'];
 
             if ($value != "1") {
                 echo $value;
@@ -6426,104 +5890,150 @@ class SpController extends CI_Controller
 
     public function view_reseller_code()
     {
+        $data = $this->initializer();
 
-        // $this->load->model('User_model');
-        // $this->load->model('Admin_model');
-        // if($this->User_model->authorized()==false)
-        // {
-        //     $this->session->set_flashdata('msg','You are not authorized to access this section');
-        //     redirect(base_url().'/UserController/login');
-        // }
+        $user = $this->session->userdata("user");
 
-        $data =$this->initializer();
-        $user = $this->session->userdata('user');
-        $data['user'] = $user; 
-        $data['allowed_services'] = $this->Admin_model->getUserDetailsById($user['id']);
-        $email = $user['email'];
-        $solution['s'] = $this->User_model->solutions_list();
-        $this->load->view('navbar3',$data);
-        $this->load->view('sp/sidebar',$data);
-        $this->load->view('sp/code_management/view_code_list',$solution,$data);
-        $this->load->view('footer');
+        $data["user"] = $user;
+
+        $data["allowed_services"] = $this->Admin_model->getUserDetailsById(
+            $user["id"]
+        );
+
+        $email = $user["email"];
+
+        $solution["s"] = $this->User_model->solutions_list();
+
+        $this->load->view("navbar3", $data);
+
+        $this->load->view("sp/sidebar", $data);
+
+        $this->load->view(
+            "sp/code_management/view_code_list",
+            $solution,
+            $data
+        );
+
+        $this->load->view("footer");
     }
-
-    //show unused code
 
     public function unused_code()
     {
         $data = $this->initializer();
+
         $user = $this->session->userdata("user");
+
         $data["user"] = $user;
+
         $data["allowed_services"] = $this->Admin_model->getUserDetailsById(
             $user["id"]
         );
+
         $email = $user["email"];
-        // $unused_code_list["h"] = $this->User_model->get_unused_code($email);
-        $unused_code_list["h"] = getQuery( [ 'where' => 'email = "'.$email.'" and ( ( status = "UnUsed" AND link_status = "enabled") OR ( status = "UnUsed" AND link_status = "disabled") )' , 'table' => ' generated_code_details' , 'result' => true ] );
-        // pre( $unused_code_list["h"] , 1);
+        $unused_code_list["h"] = getQuery([
+            "where" =>
+                'email = "' .
+                $email .
+                '" and ( ( status = "UnUsed" AND link_status = "enabled") OR ( status = "UnUsed" AND link_status = "disabled") )',
+            "table" => " generated_code_details",
+            "result" => true,
+        ]);
+
         $this->load->view("navbar3", $data);
+
         $this->load->view("sp/sidebar", $data);
+
         $this->load->view("unused_code_list", $unused_code_list);
+
         $this->load->view("footer");
     }
 
     public function domain_request()
     {
         $this->load->library("form_validation");
+
         $this->load->model("User_model");
+
         $this->load->model("Admin_model");
+
         if ($this->User_model->authorized() == false) {
             $this->session->set_flashdata(
                 "msg",
                 "You are not authorized to access this section"
             );
+
             redirect(base_url() . "/UserController/login");
         }
+
         $user = $this->session->userdata("user");
+
         $data["user"] = $user;
+
         $data["allowed_services"] = $this->Admin_model->getUserDetailsById(
             $user["id"]
         );
+
         $this->load->view("navbar3", $data);
+
         if ($user["iam"] == "reseller") {
             $this->load->view("sidebar", $data);
         } else {
             $this->load->view("sp/sidebar", $data);
         }
+
         $this->load->view("sp/landing_page/domain_request");
+
         $this->load->view("footer");
+
         if (isset($_POST["request_btn"])) {
             $this->form_validation->set_rules(
                 "domain_name",
                 "Domain Name",
                 "required"
             );
+
             if ($this->form_validation->run() == true) {
                 $domain_name = $_POST["domain_name"];
+
                 $count = $this->User_model->check_duplicacy($domain_name);
+
                 if ($count == 0) {
                     $formArray = [
                         "reseller_id" => $_POST["domain_name"],
+
                         "r_email" => $user["email"],
+
                         "logo" => "",
+
                         "banner_img" => "",
+
                         "banner_head" => "",
+
                         "banner_msg" => "",
+
                         "about_us" => "",
+
                         "email" => "",
+
                         "address" => "",
+
                         "contact" => "",
+
                         "fb_url" => "",
+
                         "twt_url" => "",
+
                         "ftr" => "",
+
                         "status" => "0",
                     ];
+
                     $this->User_model->homepage_insertion($formArray);
-                    // lQ(1);
+
                     $this->session->set_flashdata("msg2", "Saved Successfully");
+
                     redirect("/SpController/domain_request", "refresh");
-                }
-                else{
+                } else {
                     $this->session->set_flashdata(
                         "msg",
                         "This Domain Name is Already Exist"
@@ -6531,9 +6041,9 @@ class SpController extends CI_Controller
 
                     redirect("/SpController/domain_request", "refresh");
                 }
-            }
-            else{
+            } else {
                 $this->session->set_flashdata("msg", form_error("domain_name"));
+
                 redirect("/SpController/domain_request", "refresh");
             }
         }
@@ -6619,21 +6129,7 @@ class SpController extends CI_Controller
     {
         $data_view = [];
 
-        // $this->load->model('User_model');
-
-        // $this->load->model('Base_model');
-
         $this->load->model("Sp_model");
-
-        // if($this->User_model->authorized()==false)
-
-        // {
-
-        //     $this->session->set_flashdata('msg','You are not authorized to access this section');
-
-        //     redirect(base_url().'/UserController/login');
-
-        // }
 
         $data = $this->initializer();
 
@@ -6663,21 +6159,7 @@ class SpController extends CI_Controller
     {
         $data_view = [];
 
-        // $this->load->model('User_model');
-
-        // $this->load->model('Base_model');
-
         $this->load->model("Sp_model");
-
-        // if($this->User_model->authorized()==false)
-
-        // {
-
-        //     $this->session->set_flashdata('msg','You are not authorized to access this section');
-
-        //     redirect(base_url().'/UserController/login');
-
-        // }
 
         $data = $this->initializer();
 
@@ -6703,8 +6185,6 @@ class SpController extends CI_Controller
             );
 
             if ($this->form_validation->run()) {
-                //image Upload #start.
-
                 $upload_path = "uploads/vocational_training/";
 
                 $new_name = time() . "-" . $_FILES["up_file"]["name"];
@@ -6716,7 +6196,7 @@ class SpController extends CI_Controller
 
                     "allowed_types" => "zip",
 
-                    "max_size" => "2048000", //2.048mb
+                    "max_size" => "2048000",
 
                     "max_height" => "0",
 
@@ -6754,8 +6234,6 @@ class SpController extends CI_Controller
 
                     $last_id = $this->db->insert_id();
 
-                    // sub section #start
-
                     $section_name = $this->input->post("training_section_name");
 
                     $section_desc = $this->input->post("training_section_desc");
@@ -6784,13 +6262,9 @@ class SpController extends CI_Controller
                     } else {
                         $data_view["check_inset"] = "ERROR";
                     }
-
-                    // sub section #end
                 } else {
                     $data_view["imageError"] = $this->upload->display_errors();
                 }
-
-                // image Upload #end.
             }
         }
 
@@ -6959,8 +6433,6 @@ class SpController extends CI_Controller
 
         if ($action_path == "CONTENT_UPLOAD") {
             if (!empty($_FILES["content_file"]["name"])) {
-                //image Upload #start.
-
                 $upload_path = "uploads/vocational_training/";
 
                 $new_name = time() . "-" . $_FILES["content_file"]["name"];
@@ -6972,7 +6444,7 @@ class SpController extends CI_Controller
 
                     "allowed_types" => "zip",
 
-                    "max_size" => "2048000", //2.048mb
+                    "max_size" => "2048000",
 
                     "max_height" => "0",
 
@@ -7182,7 +6654,7 @@ class SpController extends CI_Controller
 
                     "allowed_types" => "zip",
 
-                    "max_size" => "2048000", //2.048mb
+                    "max_size" => "2048000",
 
                     "max_height" => "0",
 
@@ -7364,8 +6836,6 @@ class SpController extends CI_Controller
 
     function mail_template()
     {
-        // $data['user_data'] = ["rid"=>9,"email_id"=>"abc@gmail.com"];
-
         $this->load->model("Sp_model");
 
         $data["user_details"] = $this->Sp_model->get_job_data(
@@ -7492,8 +6962,6 @@ class SpController extends CI_Controller
         $this->load->view("footer");
     }
 
-    //Jops #Start
-
     public function posts_job()
     {
         $data_view = [];
@@ -7580,8 +7048,6 @@ class SpController extends CI_Controller
                 "Job Types",
                 "required"
             );
-
-            // $this->form_validation->set_rules('job_locations','Job Locations','required');
 
             $this->form_validation->set_rules(
                 "posting_nature",
@@ -7754,8 +7220,6 @@ class SpController extends CI_Controller
                 "Job Types",
                 "required"
             );
-
-            // $this->form_validation->set_rules('job_locations','Job Locations','required');
 
             $this->form_validation->set_rules(
                 "posting_nature",
@@ -7936,8 +7400,6 @@ class SpController extends CI_Controller
         $this->load->view("footer");
     }
 
-    //Jops #End
-
     public function ap_book_view()
     {
         $data = $this->initializer();
@@ -7999,23 +7461,9 @@ class SpController extends CI_Controller
     {
         $data = [];
 
-        // $this->load->model('User_model');
-
-        // $this->load->model('Commen_model');
-
         $data = $this->initializer();
 
         $user = $this->session->userdata("user");
-
-        // if($this->User_model->authorized()==false)
-
-        // {
-
-        //     $this->session->set_flashdata('msg','You are not authorized to access this section');
-
-        //     redirect(base_url().'/UserController/login');
-
-        // }
 
         $services = $this->Commen_model->reseller_services($user["email"]);
 
@@ -8129,8 +7577,6 @@ class SpController extends CI_Controller
 
         $level["sk"] = $this->Admin_model->provider_level3_list();
 
-        // $level['s'] = $this->User_model->solutions_list();
-
         $where = "iam='sp' and status!='0' and id>=$num";
 
         $this->db->where($where);
@@ -8138,8 +7584,6 @@ class SpController extends CI_Controller
         $this->db->limit("6");
 
         $level["l"] = $this->db->get("user_details");
-
-        // $this->load->view('navbar');
 
         $this->load->view("sp/header3");
 
@@ -8169,8 +7613,6 @@ class SpController extends CI_Controller
 
             "key2" => $key2,
         ];
-
-        // print_r($_POST)."<br>";
 
         $data = [];
 
@@ -8210,21 +7652,15 @@ class SpController extends CI_Controller
             );
         }
 
-        // echo $config['total_rows'];
-
         $config["per_page"] = 10;
 
         $config["uri_segment"] = 2;
 
         $config["use_page_numbers"] = true;
 
-        //echo
-
         $this->pagination->initialize($config);
 
         $page = $this->uri->segment(2) ? $this->uri->segment(2) : 0;
-
-        // echo $page."<br>";
 
         $data["l"] = $this->Admin_model->fetch_user_details(
             $config["per_page"],
@@ -8233,14 +7669,6 @@ class SpController extends CI_Controller
         );
 
         $data["links"] = $this->pagination->create_links();
-
-        // echo "<pre>";
-
-        // print_r($data['l']);
-
-        // echo "</pre>";
-
-        // die;
 
         $this->load->view("sp/sp_header", $data);
 
@@ -8258,8 +7686,6 @@ class SpController extends CI_Controller
         $this->load->model("Sp_model");
 
         $this->load->model("Admin_model");
-
-        // $email = $this->input->get('email');
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             show_404();
@@ -8299,10 +7725,6 @@ class SpController extends CI_Controller
             $user["id"]
         );
 
-        //echo "<pre>";print_r($metadata);die;
-
-        //$metadata['flow']= $this->User_model->get_landing_section_data();['flow']
-
         $landing = $this->User_model->landingId($user["id"]);
 
         $data["landing"] = $this->Admin_model->get_landing_data_by_user(
@@ -8321,8 +7743,6 @@ class SpController extends CI_Controller
 
         $file = "list";
 
-        //load view
-
         $this->load->view("navbar", $data);
 
         $this->load->view("sp/sidebar", $data);
@@ -8334,12 +7754,6 @@ class SpController extends CI_Controller
 
     public function landingSectionDelete($id)
     {
-        //echo "edit";die();
-
-        //echo $status;die;
-
-        //$status = ($status==1)?0:1;
-
         $this->load->database();
 
         $this->load->model("User_model");
@@ -8375,8 +7789,6 @@ class SpController extends CI_Controller
             "dev"
         );
 
-        //$this->load->model('Admin_model');
-
         $result = $this->User_model->landingSectionDelete($id);
 
         if ($result == true) {
@@ -8396,31 +7808,17 @@ class SpController extends CI_Controller
 
     public function addParameterValues()
     {
-        // $id = $this->input->post('id',TRUE);
-
-        // echo $id;die();
-
         $this->load->helper(["form", "url"]);
 
         $this->load->library("form_validation");
 
-        //echo "dgdgdfkgjdfgkjdf";die;
-
         $this->form_validation->set_rules("values", "Value", "required");
-
-        //$this->form_validation->set_rules('descripation','Descripation','required');
-
-        //$this->form_validation->set_rules('path','path','required');
 
         $landingId = $this->input->post("landingId", true);
 
         $section_id = $this->input->post("id", true);
 
         $resellerId = $this->input->post("resellerId", true);
-
-        // if($this->form_validation->run()== true)
-
-        // {
 
         $this->load->model("User_model");
 
@@ -8463,34 +7861,18 @@ class SpController extends CI_Controller
 
     public function addLandingSectionParameter()
     {
-        // $id = $this->input->post('id',TRUE);
-
-        // echo $id;die();
-
         $this->load->helper(["form", "url"]);
 
         $this->load->library("form_validation");
 
-        //echo "dgdgdfkgjdfgkjdf";die;
-
         $this->form_validation->set_rules("section_name", "Name", "required");
 
-        //$this->form_validation->set_rules('descripation','Descripation','required');
-
-        //$this->form_validation->set_rules('path','path','required');
-
         if ($this->form_validation->run() == true) {
-            /// echo "dgdgdfkgjdfgkjdffgfgfgffgf";die;
-
-            //echo "if";die();
-
             $landingId = $this->input->post("landingId", true);
 
             $name = $this->input->post("section_name", true);
 
             $resellerId = $this->input->post("resellerId", true);
-
-            //$path = $this->input->post('path',TRUE);
 
             $data = [];
 
@@ -8539,8 +7921,6 @@ class SpController extends CI_Controller
             $sectionId
         );
 
-        //echo "<pre>";print_r($reseller);die;
-
         $html = "";
 
         foreach ($landing_page_details as $row) {
@@ -8582,8 +7962,6 @@ class SpController extends CI_Controller
 
             $html .= "</div>";
         }
-
-        //echo $html;exit;
 
         echo json_encode($html);
     }
@@ -8643,7 +8021,6 @@ class SpController extends CI_Controller
 
     public function counselingParameters()
     {
-
         $data = $this->initializer();
 
         $user = $data["user"];
@@ -8657,8 +8034,6 @@ class SpController extends CI_Controller
         );
 
         $controller_name = debug_backtrace();
-
-        //load view
 
         $this->load->view("navbar", $data);
 
@@ -8837,8 +8212,6 @@ class SpController extends CI_Controller
             "dev"
         );
 
-        //$this->load->model('Admin_model');
-
         $result = $this->User_model->counselingDelete($id);
 
         if ($result == true) {
@@ -8859,6 +8232,7 @@ class SpController extends CI_Controller
     public function counseling_type()
     {
         $this->load->library("form_validation");
+
         $data = $this->initializer();
 
         $data["counseling_type"] = $this->User_model->getcounselingTypeById(
@@ -8954,7 +8328,6 @@ class SpController extends CI_Controller
             "required|valid_email|is_unique[user_associate.email]"
         );
         if ($this->form_validation->run() == true) {
-            // pre( $_POST , 1 );
             $this->load->helper("check_expiry_helper");
             $code = random_strings();
             $user = $this->session->userdata("user");
@@ -8990,9 +8363,7 @@ class SpController extends CI_Controller
                 "user_type" => $user["iam"],
                 "fullname" => $this->input->post("fullname"),
             ];
-            //echo "<pre>";print_r($formData);die();
             $result = $this->Sp_model->insertAssociate($formData);
-            // pre( $result , 1 );
             if ($result) {
                 $subject = "Welcome from Respicite LLP - Verify your Email id";
                 $body_msg =
@@ -9043,8 +8414,6 @@ class SpController extends CI_Controller
 
         $user = $this->session->userdata("user");
 
-        //$formData = array();
-
         $selected_code = $this->input->post("selected_code")
             ? $this->input->post("selected_code")
             : "";
@@ -9061,8 +8430,6 @@ class SpController extends CI_Controller
             $user_id,
             $user_type
         );
-
-        //echo "res=".$result;die();
 
         if ($result) {
             $this->session->set_flashdata("msg2", "Added Successfully");
@@ -9096,10 +8463,6 @@ class SpController extends CI_Controller
             $user_id,
             $user_type
         );
-
-        // echo "<pre>";
-
-        // print_r($db_data);die();
 
         $data = $this->initializer();
 
@@ -9147,9 +8510,6 @@ class SpController extends CI_Controller
         $associate_id = base64_decode($id);
 
         $db_data["dataById"] = $this->Sp_model->getAssociateById($associate_id);
-        // echo "<pre>";
-
-        // print_r($db_data);die();
 
         $data = $this->initializer();
 
@@ -9263,15 +8623,9 @@ class SpController extends CI_Controller
             $sol = "ocoxt";
         }
 
-        // echo $sol;die();
-
-        // die();
-
         $user = $this->session->userdata("user");
 
         $email_id = $user["email"];
-
-        //print_r($email_id);die();
 
         $this->db->where("email", $email_id);
 
@@ -9292,6 +8646,6 @@ class SpController extends CI_Controller
 
         redirect(base_url() . "SpController/become_partner_counselor");
     }
-} //class #END
+}
 
 ?>

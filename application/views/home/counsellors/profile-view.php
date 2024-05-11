@@ -478,7 +478,7 @@
         .services{
             min-height : 100px;
             height: auto;
-        }   
+        }
     </style>
 
   </head>
@@ -768,9 +768,6 @@
                                             else{
                                                 // echo 2;
                                                 $image = LIVE_URL.'uploads/'.$img_arr[count($img_arr) - 1];
-                                            // }
-                                            // else{
-                                            //     $image = base_url().'uploads/avatar-100-100.jpg';
                                             }
                                         }
                                         // $image = base_url().'uploads/avatar.jpg';
@@ -789,9 +786,6 @@
                                             else{
                                                 // echo 2;
                                                 $image = LIVE_URL.'uploads/'.$img_arr[count($img_arr) - 1];
-                                            // }
-                                            // else{
-                                            //     $image = base_url().'uploads/avatar-100-100.jpg';
                                             }
                                         }
                                     }

@@ -419,6 +419,7 @@
                                                                       <a <?php if($requestParameter == null)  { ?> onclick="window.open(window.location+'/request-generate','_blank');window.open(this.href,'_self');" href="<?php echo base_url().'UserController/create-request/'.$row->code; ?>/<?= $row->solution ?>/<?= $row->user_id ?><?= isset( $folder ) ? '/'.$folder : '' ?>" <?php } else{ ?> onClick="alert('<?= $reportData['report_message'] ?>')" href='#' <?php } ?> >View Report</a><br>
 
                                                                     <?php
+
                                                                   }
 
                                                               }

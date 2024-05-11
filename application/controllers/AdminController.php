@@ -7,7 +7,7 @@
             $this->load->model('Commen_model');
             $this->load->model('Admin_model');
         }
-        protected $view_shared = [
+        protected $view_shared =[
             'na'=>'not_shared',
             'global'=>'shared_globally',
             'admin' => 'shared_admin', 
@@ -31,7 +31,7 @@
         }
 
         //admin dashboard
-            
+
         public function dashboard()
         {
             if($this->User_model->authorized()==false)
@@ -9782,8 +9782,7 @@
                             $index++;
 
                         }
-                        elseif( $data['serviceName'] == 'Skill Development' ||  $data['serviceName'] == 'School' )
-                        {
+                        elseif(  $data['serviceName'] == 'Skill Development' ||  $data['serviceName'] == 'School' ){
                             $insert[$index]['user_id'] = $users[$key]['id'];
 
                             $insert[$index]['services'] = $data['serviceName'];
@@ -9883,7 +9882,6 @@
             }
 
         }
-
 
         public function list_update(){
 
@@ -10018,6 +10016,131 @@
                 }
                 // die;
                 $this->session->set_flashdata('msg','Counsellor List Status Has been updated');
+
+                // die;
+
+
+            }
+            redirect('AdminController/view_reseller');
+
+        }
+        // Delete list_update_old_5_9_2024 after verification
+        public function list_update_old_5_9_2024(){
+
+            $list = getQuery( [  'where' => [ 'user_details_seo.status' => 'active' ,  ] , 'table' => 'user_details_seo' ] );
+            // pre($list ,1);
+            // $users = $this->Admin_model->get_sync_user();
+            // $q = 'TRUNCATE counsellor_list_status';
+            // $this->db->query($q);
+            if( !empty( $list ) ){
+
+                foreach( $list as $key => $value ){
+                    $userData = getQuery( [  'where' => [ 'id' => $value['user_id'] ] , 'table' => 'user_details' , 'single' => true ] );
+                    // lQ(1);
+                    // pre( $userData , 1 );
+                    $data['user_id'] = $userData['id'];
+                    $data['r_email'] = $userData['email'];
+                    $data['aboutUs'] = false;
+                    $data['location'] = false;
+                    $data['role'] = false;
+                    $data['profile_link'] = false;
+                    $data['thumbnail'] = false;
+                    $data['fullImage'] = false;
+                    $data['fs_listing_status'] = false;
+                    $data['fs_profile_view'] = false;
+                    $data['word_count'] = 0;
+                    if( $userData['acc_status'] != 'active' ){
+                        $data['fs_listing_status'] = false;
+                        $data['fs_profile_view'] = false;
+                    }
+                    else{
+                        $profileData = getQuery( [ 'where' => [ 'email' => $userData['email'] ] , 'table' => 'sp_profile_detail' , 'single' => true ] );
+                       
+                        if( !empty($profileData) ){
+                            $profileDataCount = $profileData['about_us']." ".$profileData['key_services']." ".$profileData['content1']." ".$profileData['content2']." ".$profileData['content3'];
+                            $data['word_count'] = str_word_count( $profileDataCount );
+                            // echo $data['word_count']." ". $data['r_email'] = $userData['email']."<br>";
+                            if( $data['word_count'] >= 100 ){
+                                $data['aboutUs'] = true;
+                            }
+                        }
+                        if( $value['locations'] != '' ){
+                            $data['location'] = true;
+                        }
+                        if( $value['services'] != '' || $userData['serviceName'] != '' ){
+                            $data['role'] = true;
+                        }
+                        $photo = explode('/',$userData['profile_photo']);
+
+                        if (file_exists($userData['profile_photo'])){
+                           
+                            if( !file_exists('uploads/counsellor-thumb/'.$photo[1]) ){
+                                resize_image( $userData['profile_photo'] , 100 , 100 , 'uploads/counsellor-thumb/'.$photo[1] );
+                            }
+                            if( count($photo) == 2 ){
+                                if (file_exists('uploads/counsellor-thumb/'.$photo[1])){
+                                    $data['thumbnail'] = true;
+                                }
+                            }
+                        }
+
+                        if( $userData['profile_link'] != ''  ){
+                            $data['profile_link'] = true;
+                        }
+
+                        $fullImage_file_headers = get_headers(LIVE_URL.$userData['profile_photo']);
+                        $fullImage_file_headers[] = LIVE_URL.$userData['profile_photo'];
+                        pre( $fullImage_file_headers );
+                        if( strpos($fullImage_file_headers[0], '404') !== false || strpos($fullImage_file_headers[0], '400') !== false ){
+                            $data['fullImage_live'] = 0;
+                        }
+                        else{
+                            $data['fullImage_live'] = 1;
+                        }
+                        
+                        $thumb_file_headers = get_headers( LIVE_URL.'uploads/counsellor-thumb/'.$photo[1]);
+                        $thumb_file_headers[]  = LIVE_URL.'uploads/counsellor-thumb/'.$photo[1];
+                        pre( $thumb_file_headers );
+                        
+                        if( strpos($thumb_file_headers[0], '404') !== false || strpos($thumb_file_headers[0], '400') !== false ){
+                            
+                            $data['thumbnail_live'] = 0;
+                        }
+                        else{
+                            $data['thumbnail_live'] = 1;
+                        }
+
+                        if (file_exists($userData['profile_photo'])){
+                            list($width, $height) = getimagesize($userData['profile_photo']);
+                            if( $width > 200 && $height > 200){
+                                resize_image( $userData['profile_photo'] , 200 , 200 , $userData['profile_photo'] );
+                                list($width, $height) = getimagesize($userData['profile_photo']);
+                            }
+                            if( $width <= 300 && $height <= 300){
+                                $data['fullImage'] = true;
+                            }
+                            // pre( [ $value['email'] , $width , $height ] );
+                        }
+    
+                        if( $data['location'] != ''  && $data['role'] != '' && $data['thumbnail'] != '' ){
+                            $data['fs_listing_status'] = true;
+                        }
+                        if( $data['fullImage'] != '' && $data['aboutUs'] != '' && $data['profile_link'] != '' ){
+                            $data['fs_profile_view'] = true;
+                        }
+                    }
+
+                    // pre( $data );
+
+                    $getCounsellor = getQuery( [ 'where'=> [ 'r_email' => $userData['email']] , 'table' => 'counsellor_list_status' , 'single' => true ] );
+                    if( !empty($getCounsellor) ){
+                        update( [ 'where' => [ 'r_email' => $userData['email'] ] , 'data' => $data , 'table' => 'counsellor_list_status' ] );
+                    }
+                    else{
+                        insert( 'counsellor_list_status'  , $data );
+                    }
+                    $this->session->set_flashdata('msg','Counsellor List Status Has been updated');
+                }
 
                 // die;
 

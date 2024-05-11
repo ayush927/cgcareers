@@ -555,7 +555,7 @@
                                           if( !empty($reportStatus) ){
                                             // if( !empty($reportControl) ){
                                             if( $reportStatus['status'] == 1 ){
-                                              echo "1";
+                                              // echo "1";
                                               if( $reportStatus['mannual_status'] == 1 ){
                                                   if( !empty($getCodeRow) ){
                                                     if( $getCodeRow['remark_status'] !=  0 ){

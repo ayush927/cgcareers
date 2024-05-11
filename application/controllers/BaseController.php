@@ -4751,7 +4751,6 @@
             $data['user'] = $user;
             $email = $user['email'];
             $codeData = getQuery( [ 'where' => [ 'code' => $code ] , 'table' => 'user_code_list' , 'single' => true  ] );
-            // pre( $codeData );
             if( !empty( $codeData ) ){
                 $variantId =  getQuery( [ 'single' => true,  'table' => 'user_solution_variation_data' , 'where' => [ 'requestId' => $codeData['id'] ] ] );
                 // pre( $variantId );
@@ -4759,7 +4758,6 @@
                     $data['variantdata'] = getQuery( [ 'single' => true, 'table' => 'solution_variant_new' , 'where' => [ 'id' => $variantId['variationId'] ] ] );
                 }
             }
-            // pre( $data , 1 );
             $this->load->view('navbar3',$data);
             $this->load->view('user/sidebar'); 
             $this->load->view('user/fill_detail',$data); 

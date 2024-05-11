@@ -277,7 +277,6 @@
       pre( [ 'status' => 'success' , 'code' => 200 , 'submitted all question with answers' , 'code' => $code , 'start' => $start , 'end' => $end, 'total' => 'Execution took '.( $end - $start ).' seconds.' , 'reportUrl' => 'https://users.respicite.com/dev/OtherAjax/uce_report_three.php?code='.base64_encode($code) ] );
     }
 
-
     function solution_careers( $provided ){
       $getCode = getQuery( [ 'where' => [ 'code' => $provided ] , 'table' => 'user_code_list' , 'single' => true ] );
       if( !empty( $getCode ) ){
@@ -295,6 +294,5 @@
         }
       }
     }
-    
   }
 ?>

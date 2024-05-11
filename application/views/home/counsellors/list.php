@@ -661,6 +661,7 @@
                                                                     $image = DEV_URL.'uploads/counsellor-thumb/avatar-100-100.jpg';
                                                                     if(  isset($profileViewdata["profile_link"]) ){
                                                                         if( $profileViewdata["thumbnail"] == 0 ){
+                                                                            // echo 1;
                                                                             $img_arr = explode('/' , $v['profile_photo'] );
                                                                             if( $img_arr[count($img_arr) - 1] == 'default.png' || $img_arr[count($img_arr) - 1] == 'default.jpg' ){
                                                                                 $image = DEV_URL.'uploads/counsellor-thumb/avatar-100-100.jpg';
@@ -676,7 +677,7 @@
                                                                                     $image = DEV_URL.'uploads/'.$img_arr[count($img_arr) - 1];
                                                                                 }
                                                                             }
-                                                                            // $image = base_url().'uploads/counsellor-thumb/avatar-100-100.jpg';
+                                                                            // $image = base_url.'uploads/counsellor-thumb/avatar-100-100.jpg';
                                                                         }
                                                                         else{
                                                                             // echo 2;
