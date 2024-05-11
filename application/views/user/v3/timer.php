@@ -34,7 +34,7 @@ function start(){
     // console.log( endTime , dateNow );
     // Find The Difference Between The Time Now And The Countdown Date
     let dateDiff = endTime - dateNow;
-    console.log( dateDiff , endTime , EndTime );
+    // console.log( dateDiff );
     let days = Math.floor(dateDiff / (1000 * 60 * 60 * 24));
     let hours = Math.floor((dateDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     let minutes = Math.floor((dateDiff % (1000 * 60 * 60)) / (1000 * 60));
@@ -42,7 +42,7 @@ function start(){
     if (dateDiff < 0) {
         clearInterval(myTimeout);
         $.ajax({
-                url: "<?php echo base_url(); ?>uce-version-3/finish_time",
+                url: "<?php echo base_url(); ?>uce_version_3/finish_time",
                 type : "post",
                 dataType: "json",
                 data:{
@@ -52,19 +52,29 @@ function start(){
                 success: function(data){
                     if(data.status == 'success')
                     {
-                    alert('Time allocated for this assessment is over.');
-                    // $('#exampleModalLong2').show();
-                    window.location = "<?php echo base_url().'assessment-variations/three/'.$nextPartName."/".base64_encode($code) ?>";
+                        alert('Time allocated for this assessment is over.');
+                        // $('#exampleModalLong2').show();
+                        window.location = "<?php echo base_url().'assessment-variations/three/'.$nextPartName."/".base64_encode($code) ?>";
                     }
                 }
             });
+
         }
+
         else{
+
             document.querySelector(".minutes").innerHTML = minutes < 10 ? `0${minutes}` : minutes;
+
             document.querySelector(".seconds").innerHTML = seconds < 10 ? `0${seconds}` : seconds;
+
         }
+
+            
+
         if (dateDiff <= 0) {
-            clearInterval(myTimeout);
+
+            clearInterval();
+
         }
 }
 

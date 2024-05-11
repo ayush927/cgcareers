@@ -4751,6 +4751,7 @@
             $data['user'] = $user;
             $email = $user['email'];
             $codeData = getQuery( [ 'where' => [ 'code' => $code ] , 'table' => 'user_code_list' , 'single' => true  ] );
+            // pre( $codeData );
             if( !empty( $codeData ) ){
                 $variantId =  getQuery( [ 'single' => true,  'table' => 'user_solution_variation_data' , 'where' => [ 'requestId' => $codeData['id'] ] ] );
                 // pre( $variantId );

@@ -1024,20 +1024,33 @@ class SpController extends CI_Controller
     public function spprofile()
     {
         $this->load->library("form_validation");
+
         $this->load->model("Sp_model");
+
         $data = $this->initializer();
+
         $user = $this->session->userdata("user");
+
         $data["user"] = $user;
+
         $email = $user["email"];
+
         $data["allowed_services"] = $this->Admin_model->getUserDetailsById(
             $user["id"]
         );
+
         $this->db->where("email", $email);
+
         $level1["l"] = $this->db->get("provider_detail_four");
+
         $solution["s"] = $this->User_model->solutions_list();
+
         $this->load->view("navbar", $data);
+
         $this->load->view("sp/sidebar", $data);
+
         $this->load->view("sp/spprofile", $level1);
+
         $this->load->view("footer");
     }
 
@@ -1169,6 +1182,9 @@ class SpController extends CI_Controller
                 $exception_list = $this->config->item(
                     "profile_complete_exception"
                 );
+
+                check_profile($user, $exception_list);
+
                 $this->session->set_flashdata("msg2", "Saved Successfully");
 
                 redirect("/SpController/spprofile", "refresh");
@@ -1398,6 +1414,8 @@ class SpController extends CI_Controller
                 $exception_list = $this->config->item(
                     "profile_complete_exception"
                 );
+
+                check_profile($user, $exception_list);
 
                 $this->session->set_flashdata("msg2", "Saved Successfully");
 
@@ -5020,6 +5038,8 @@ class SpController extends CI_Controller
 
                 $this->db->update("reseller_homepage");
 
+                check_profile($user);
+
                 $this->session->set_flashdata("msg2", "Saved Successfully");
 
                 redirect("/SpController/page_change_logo", "refresh");
@@ -5891,44 +5911,31 @@ class SpController extends CI_Controller
     public function view_reseller_code()
     {
         $data = $this->initializer();
-
         $user = $this->session->userdata("user");
-
         $data["user"] = $user;
-
         $data["allowed_services"] = $this->Admin_model->getUserDetailsById(
             $user["id"]
         );
-
         $email = $user["email"];
-
         $solution["s"] = $this->User_model->solutions_list();
-
         $this->load->view("navbar3", $data);
-
         $this->load->view("sp/sidebar", $data);
-
         $this->load->view(
             "sp/code_management/view_code_list",
             $solution,
             $data
         );
-
         $this->load->view("footer");
     }
 
     public function unused_code()
     {
         $data = $this->initializer();
-
         $user = $this->session->userdata("user");
-
         $data["user"] = $user;
-
         $data["allowed_services"] = $this->Admin_model->getUserDetailsById(
             $user["id"]
         );
-
         $email = $user["email"];
         $unused_code_list["h"] = getQuery([
             "where" =>
@@ -5938,100 +5945,65 @@ class SpController extends CI_Controller
             "table" => " generated_code_details",
             "result" => true,
         ]);
-
         $this->load->view("navbar3", $data);
-
         $this->load->view("sp/sidebar", $data);
-
         $this->load->view("unused_code_list", $unused_code_list);
-
         $this->load->view("footer");
     }
 
     public function domain_request()
     {
         $this->load->library("form_validation");
-
         $this->load->model("User_model");
-
         $this->load->model("Admin_model");
-
         if ($this->User_model->authorized() == false) {
             $this->session->set_flashdata(
                 "msg",
                 "You are not authorized to access this section"
             );
-
             redirect(base_url() . "/UserController/login");
         }
-
         $user = $this->session->userdata("user");
-
         $data["user"] = $user;
-
         $data["allowed_services"] = $this->Admin_model->getUserDetailsById(
             $user["id"]
         );
-
         $this->load->view("navbar3", $data);
-
         if ($user["iam"] == "reseller") {
             $this->load->view("sidebar", $data);
         } else {
             $this->load->view("sp/sidebar", $data);
         }
-
         $this->load->view("sp/landing_page/domain_request");
-
         $this->load->view("footer");
-
         if (isset($_POST["request_btn"])) {
             $this->form_validation->set_rules(
                 "domain_name",
                 "Domain Name",
                 "required"
             );
-
             if ($this->form_validation->run() == true) {
                 $domain_name = $_POST["domain_name"];
-
                 $count = $this->User_model->check_duplicacy($domain_name);
-
                 if ($count == 0) {
                     $formArray = [
                         "reseller_id" => $_POST["domain_name"],
-
                         "r_email" => $user["email"],
-
                         "logo" => "",
-
                         "banner_img" => "",
-
                         "banner_head" => "",
-
                         "banner_msg" => "",
-
                         "about_us" => "",
-
                         "email" => "",
-
                         "address" => "",
-
                         "contact" => "",
-
                         "fb_url" => "",
-
                         "twt_url" => "",
-
                         "ftr" => "",
-
                         "status" => "0",
                     ];
-
                     $this->User_model->homepage_insertion($formArray);
-
                     $this->session->set_flashdata("msg2", "Saved Successfully");
-
                     redirect("/SpController/domain_request", "refresh");
                 } else {
                     $this->session->set_flashdata(
@@ -6043,7 +6015,6 @@ class SpController extends CI_Controller
                 }
             } else {
                 $this->session->set_flashdata("msg", form_error("domain_name"));
-
                 redirect("/SpController/domain_request", "refresh");
             }
         }
@@ -8232,7 +8203,6 @@ class SpController extends CI_Controller
     public function counseling_type()
     {
         $this->load->library("form_validation");
-
         $data = $this->initializer();
 
         $data["counseling_type"] = $this->User_model->getcounselingTypeById(
@@ -8647,5 +8617,4 @@ class SpController extends CI_Controller
         redirect(base_url() . "SpController/become_partner_counselor");
     }
 }
-
 ?>

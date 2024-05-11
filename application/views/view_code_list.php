@@ -68,12 +68,12 @@
     </section>
 
     <section class="content">
-
+ 
       <div class="container-fluid">
 
-      <?php view('message'); ?>
+        <?php view('message'); ?>
 
-      <div class="row">
+        <div class="row">
 
           <div class="col-12">
 
@@ -83,138 +83,85 @@
 
                 <h3 class="card-title">Code List</h3>
 
-
               </div> 
 
               <!-- /.card-header -->
 
-              
-
               <div class="card-body">
 
                 <table id="example2" class="table table-bordered table-striped">
-
                   <thead>
-
                     <tr>
-
-                    
-
                       <th>Solution</th>
-
                       <th>Total Codes Purchased</th>
-
                       <th>Unused Codes</th>
-                      
                       <th>Solution Link</th>
-
                     </tr>
-
                   </thead>
-
                   <tbody>
-                    <?php
-                      $email = $user['email'];
+                  <?php 
+                  // pre(  $user , 1 );
+                  $email = $user['email'];
 
-                      foreach ($s->result() as $solution)  
+                  foreach ($s->result() as $solution)  
+                  {
+                      $solution = $solution->solution;
+
+                      $where = "email='$email' and solution='$solution'";
+
+                      $this->db->where($where);
+
+                      $d = $this->db->get('generated_code_details');
+
+                      $solutionLink = getQuery( [ 'where' => [ 'reseller_id' => $user['id'] , 'solution' => $solution ] , 'table' => 'assessment_link' , 'single' => true ] );
+
+                      $where2 = "email='$email' and solution='$solution' and status='UnUsed'";
+
+                      $this->db->where($where2);
+
+                      $n = $this->db->get('generated_code_details')->num_rows();
+
+                      $i=0;
+
+                      foreach( $d->result() as $d )
                       {
-                        $solution = $solution->solution;
-                        $where = "email='$email' and solution='$solution'";
-                        $this->db->where($where);
-                        $d = $this->db->get('generated_code_details');
-                        $solutionLink = getQuery( [ 'where' => [ 'reseller_id' => $user['id'] , 'solution' => $solution ] , 'table' => 'assessment_link' , 'single' => true ] );
-                        $where2 = "email='$email' and solution='$solution' and status='UnUsed'";
-                        $this->db->where($where2);
-                        $n = $this->db->get('generated_code_details')->num_rows();
-                        $i=0;
-                        foreach( $d->result() as $d )
-                        {
-                            $i++;
+                          $i++;
+                      }
+                      if($i>0)
+                      {
+                      ?>
+                        <tr>
+                          <td> <?= $solution;?></td>
+                          <td> <?= $i ?> </td>
+                          <td> <?= $n ?></td>                       
+                          <td> <?php
+                          if( !empty($solutionLink) ) {
+                            $assessment_link = base_url().'take-assessment/'.$solutionLink['link'];
+                          ?>
+                            <span id="<?= $solution ?>"> <?= $assessment_link ?> </span> <i onclick='copySelection("<?= $solution ?>")' class='text-copy-btn btn btn-info fa fa-copy' title='copy'></i> <i onclick='shareSelection("<?= $assessment_link ?>")' class="btn btn-success fa fa-share-square" title='Share'></i>
+                          <?php
+                            }
+                            else{
+                          ?> 
+                            <a class="btn btn-info" href="<?=base_url().'common-action/create-assessment-link/'.$solution ?> "> Create Link </a>
+                          <?php
+                            }
+                          ?>
+                        </td>
+                      </tr>
+                      <?php
                         }
-                        if($i>0)
-                        {
-                        ?>
-                          <tr>
-                            <td> <?= $solution;?></td>
-                            <td> <?= $i ?> </td>
-                            <td> <?= $n ?></td>                       
-                            <td> <?php
-                            if( !empty($solutionLink) ) {
-                              $assessment_link = base_url().'take-assessment/'.$solutionLink['link'];
-                            ?>
-                              <span id="<?= $solution ?>"> <?= $assessment_link ?> </span> <i onclick='copySelection("<?= $solution ?>")' class='text-copy-btn btn btn-info fa fa-copy' title='copy'></i> <i onclick='shareSelection("<?= $assessment_link ?>")' class="btn btn-success fa fa-share-square" title='Share'></i>
-                            <?php
-                              }
-                              else{
-                            ?> 
-                              <a class="btn btn-info" href="<?=base_url().'common-action/create-assessment-link/'.$solution ?> "> Create Link </a>
-                            <?php
-                              }
-                            ?>
-                          </td>
-                        </tr>
-                        <?php
-                          }
-                        }
-                      // $email = $user['email'];
-
-                      // foreach ($s->result() as $solution)  
-                      // {
-                      //     $solution = $solution->solution;
-
-                      //     $where = "email='$email' and solution='$solution'";
-
-                      //     $this->db->where($where);
-
-                      //     $d = $this->db->get('generated_code_details');
-
-                      //     $solutionLink = getQuery( [ 'where' => [ 'reseller_id' => $user['id'] , 'solution' => $solution ] , 'table' => 'assessment_link' , 'single' => true ] );
-
-                      //     $where2 = "email='$email' and solution='$solution' and status='UnUsed'";
-
-                      //     $this->db->where($where2);
-
-                      //     $n = $this->db->get('generated_code_details')->num_rows();
-
-                      //     $i=0;
-
-                      //     foreach( $d->result() as $d )
-                      //     {
-                      //         $i++;
-                      //     }
-                      //     if($i>0)
-                      //     {
-                      //       echo "<tr><td>";
-                      //       echo $solution;
-                      //       echo "</td>";
-                      //       echo "<td>";
-                      //       echo $i;
-                      //       echo "</td>";
-                      //       echo "<td>";
-                      //       echo $n;
-                      //       echo "</td>";                       
-                      //       echo "<td>";
-                      //       echo ( !empty($solutionLink) ?  base_url().'UserController/take-assessment/'.$solutionLink['link'] : '<a class="btn btn-info" href="'.base_url().'UserController/create-assessment-link/'.$solution.'"> Create Link </a>' );
-                      //       echo "</td></tr>";
-                      //     }
-                      // }
-                    ?>
-                  </tbody>
-
-                </table>
+                  }
+                ?>  
+              </tbody>
+              </table>
               </div>
               <!-- /.card-body -->
-
             </div>
-
             <!-- /.card -->
-
           </div>
-
         </div>
-
-         <!-- jQuery -->
-
+        <!-- jQuery -->
 <script src="<?php echo base_url('/assets/plugins/jquery/jquery.min.js'); ?>"></script>
 
 <!-- Bootstrap 4 -->
@@ -228,8 +175,8 @@
 <script src="<?php echo base_url().'assets/plugins/datatables-responsive/js/dataTables.responsive.min.js';?>"></script>
 
 <script src="<?php echo base_url().'assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js';?>"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
 
   $(function () {
@@ -262,7 +209,6 @@
 
   });
 
-  
   function copySelection( solution ){
       var temp = $("<input>");
       $("body").append(temp);

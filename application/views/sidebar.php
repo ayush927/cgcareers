@@ -617,6 +617,12 @@
                   <i class="far fa-circle nav-icon"></i>
                   <p>Boards</p>
                 </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?php echo base_url().'UserController/boards'; ?>" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Boards</p>
+                </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
                     <a target='_blank' href="https://drive.google.com/drive/folders/1vI7AySZ7TxjDo2QZdTEGSHZtzc1jACoh?usp=drive_link" class="nav-link">

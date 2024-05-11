@@ -60,10 +60,7 @@ ob_start();
 	
 	define('RESPICITE_URL', strpos( $_SERVER['SCRIPT_URI'] , '/dev/') ? "https://respicite.com/dev/" : 'https://respicite.com/' );
 	
-	
-	
-	define('LIVE_URL',  "https://users.respicite.com/" );
-	define('DEV_URL',   'https://users.respicite.com/dev/' );
+	define('LIVE_URL',  strpos( $_SERVER['SCRIPT_URI'] , '/dev/') ? "https://users.respicite.com/" : 'https://users.respicite.com/dev/' );
 	date_default_timezone_set('Asia/Kolkata');
 /*
  *---------------------------------------------------------------
@@ -79,7 +76,7 @@ switch (ENVIRONMENT)
 		error_reporting(-1);
 		ini_set('display_errors', 1);
 	break;
-	
+
 	case 'testing':
 	case 'production':
 		ini_set('display_errors', 0);

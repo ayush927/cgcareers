@@ -478,7 +478,7 @@
         .services{
             min-height : 100px;
             height: auto;
-        }
+        }   
     </style>
 
   </head>

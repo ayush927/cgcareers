@@ -226,7 +226,7 @@
   }
 
   function createRadios( optionsList, questionCounter , item , questionIndex ) {
-    var radioList = $('<div class="form-group clearfix '+( partName == 'uce_part2_3' ? 'col-md-6 text-center' : '' )+'">');
+      var radioList = $('<div class="form-group clearfix '+( partName == 'uce_part2_3' ? 'col-md-6 text-center' : '' )+'">');
       var radioSelected = false;
       // console.log( 'before', currentPageData , (currentPage-1));
       if( typeof selections[(currentPage-1)] !== 'undefined' ){

@@ -9782,7 +9782,7 @@
                             $index++;
 
                         }
-                        elseif(  $data['serviceName'] == 'Skill Development' ||  $data['serviceName'] == 'School' ){
+                        elseif( $data['serviceName'] == 'Skill Development' ||  $data['serviceName'] == 'School' ){
                             $insert[$index]['user_id'] = $users[$key]['id'];
 
                             $insert[$index]['services'] = $data['serviceName'];

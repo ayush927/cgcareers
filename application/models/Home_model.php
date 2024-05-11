@@ -54,13 +54,13 @@ class Home_model extends CI_Model{
                 $services_arr[$k] = $arr[$v];
             }
         }
-        // return array_unique($services_arr);
+        // pre(array_unique($services_arr), 1);
         return array_unique([ 
-            'Career Counselling',
-            'Overseas Services',
-            'Parenting Counselling'
-        ]);
-    }
+                'Career Counselling',
+                'Overseas Services',
+                'Parenting Counselling'
+            ]);
+        }
 
     function cities_list(){
         $this->db->distinct();
